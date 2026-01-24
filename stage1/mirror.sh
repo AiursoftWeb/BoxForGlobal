@@ -11,7 +11,7 @@ mirror_image() {
 }
 
 echo "Mirroring Ubuntu..."
-mirror_image "ubuntu:25.04"
+mirror_image "ubuntu:25.10"
 
 echo "Mirroring Caddy builder..."
 mirror_image "caddy:builder"
@@ -19,3 +19,15 @@ mirror_image "caddy:builder"
 echo "Mirroring Caddy latest..."
 mirror_image "caddy:latest"
 
+echo "Mirroring Cloudflared..."
+mirror_image "cloudflare/cloudflared"
+
+echo "Mirroring Postgres..."
+mirror_image "postgres:16-alpine"
+
+echo "Mirroring Redis..."
+mirror_image "redis:alpine"
+
+# The tag need to be updated regularly.
+echo "Mirroring GoAuthentik server..."
+mirror_image "ghcr.io/goauthentik/server:2025.12.1"
