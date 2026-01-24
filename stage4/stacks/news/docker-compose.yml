@@ -1,0 +1,77 @@
+version: '3.9'
+
+services:
+  app:
+    depends_on:
+      - app-db
+    image: aiursoft/moongladepure
+    volumes:
+      - app-files:/data/files
+      - app-aspnet:/data/.aspnet
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=app-db;Database=app;Uid=app;Pwd=<app_password>;
+      - ConnectionStrings__DbType=MySql
+      - Storage__Path=/data/files
+      - AppSettings__AuthProvider=OIDC
+      - OIDC__Authority=https://auth.aiursoft.com/application/o/anduinos-blog
+      - OIDC__ClientId={{ANDUINOS_BLOG_CLIENT_ID}}
+      - OIDC__ClientSecret={{ANDUINOS_BLOG_CLIENT_SECRET}}
+    networks:
+      - net
+      - proxy_app
+    stop_grace_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  app-db:
+    image: mysql
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=<app_password>
+    networks:
+      - net
+    stop_grace_period: 60s
+    deploy:
+      update_config:
+        order: stop-first
+        delay: 60s
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+networks:
+  net:
+    driver: overlay
+  proxy_app:
+    external: true
+
+volumes:
+  app-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/news/app-files
+  app-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/news/app-aspnet
+  db-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/news/db-data
