@@ -570,6 +570,10 @@ print_ok "Building local aptmirror..."
 sudo docker build ./stage3/images/aptmirror -t localhost:8080/box_starting/local_aptmirror:latest
 sudo docker push localhost:8080/box_starting/local_aptmirror:latest
 
+print_ok "Building local runner..."
+sudo docker build ./stage3/images/runner -t localhost:8080/box_starting/local_runner:latest
+sudo docker push localhost:8080/box_starting/local_runner:latest
+
 print_ok "Starting Zot, Puller, AptMirror and Authentik..."
 deploy stage3/stacks/zot/docker-compose.yml zot
 deploy stage3/stacks/puller/docker-compose.yml puller
