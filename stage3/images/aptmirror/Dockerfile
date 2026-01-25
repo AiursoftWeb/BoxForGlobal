@@ -1,9 +1,4 @@
-# 使用您确认的 Ubuntu 基础镜像
 FROM localhost:8080/public_mirror/aiursoft/static
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get install -y cron && \
-    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /data
 
