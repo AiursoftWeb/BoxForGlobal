@@ -28,6 +28,9 @@ mirror_image "postgres:16-alpine"
 echo "Mirroring Redis..."
 mirror_image "redis:alpine"
 
+echo "Mirroring Aiursoft Static..."
+mirror_image "aiursoft/static"
+
 # The tag need to be updated regularly.
 echo "Mirroring GoAuthentik server..."
 mirror_image "ghcr.io/goauthentik/server:2025.12.1"

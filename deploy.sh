@@ -554,7 +554,7 @@ done
 print_warn "=============================================================================="
 print_warn "   Ending stage 2: Basic web infrastructure is ready."
 print_warn ""
-print_warn "   Starting stage 3: Mission is to build and start Authentik Puller and Zot"
+print_warn "   Starting stage 3: Mission is to build and start Zot, Puller, AptMirror and Authentik"
 print_warn "=============================================================================="
 sleep 3
 
@@ -566,10 +566,15 @@ print_ok "Building local puller..."
 sudo docker build ./stage3/images/puller -t localhost:8080/box_starting/local_puller:latest
 sudo docker push localhost:8080/box_starting/local_puller:latest
 
-print_ok "Starting Authentik puller and Zot..."
-deploy stage3/stacks/puller/docker-compose.yml puller
-deploy stage3/stacks/authentik/docker-compose.yml authentik
+print_ok "Building local aptmirror..."
+sudo docker build ./stage3/images/aptmirror -t localhost:8080/box_starting/local_aptmirror:latest
+sudo docker push localhost:8080/box_starting/local_aptmirror:latest
+
+print_ok "Starting Zot, Puller, AptMirror and Authentik..."
 deploy stage3/stacks/zot/docker-compose.yml zot
+deploy stage3/stacks/puller/docker-compose.yml puller
+deploy stage3/stacks/aptmirror/docker-compose.yml aptmirror
+deploy stage3/stacks/authentik/docker-compose.yml authentik
 
 print_ok "Making sure the authentik is ready..."
 while curl -s https://auth.aiursoft.com > /dev/null; [ $? -ne 0 ]; do
@@ -585,7 +590,7 @@ while curl -s https://hub.aiursoft.com > /dev/null; [ $? -ne 0 ]; do
 done
 
 print_warn "=============================================================================="
-print_warn "   Ending stage 3: Authentik Puller and Zot are ready."
+print_warn "   Ending stage 3: Zot, Puller, AptMirror and Authentik are ready."
 print_warn ""
 print_warn "   Starting stage 4: Mission is to deploy business stacks"
 print_warn "=============================================================================="
