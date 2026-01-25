@@ -9,6 +9,7 @@
 		format json
 		output file /data/caddy/logs/web.log {
 			roll_size 1gb
+			roll_keep 5
 			roll_uncompressed
 		}
 		level info
