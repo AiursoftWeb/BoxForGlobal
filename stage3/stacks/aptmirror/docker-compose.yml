@@ -18,7 +18,7 @@ services:
         delay: 5s
 
 volumes:
-  exp-apt-mirror-data:
+  apt-mirror-data:
     driver: local
     driver_opts:
       type: none
