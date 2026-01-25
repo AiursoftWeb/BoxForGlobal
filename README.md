@@ -6,6 +6,16 @@ This is the docker swarm setup for AnduinOS.
 
 这是一个容器唤起系统，能够一键配置并运行 AnduinOS 相关的服务。它基于 Cloudflare + Caddy + Docker Swarm + Py_Syncer + ClickHouse + ASP.NET Core 技术栈。
 
+* stage 0 启动一个基础的 小 registry
+* stage 1 mirror 最基础的 Ubuntu，Caddy，PG, Redis, Static, Authentik，Baget
+* stage 2 基础网络联通。编译加速过的Ubuntu，Caddy，PySyncer。此时有网了。
+* stage 3 基础 Registry。编译并启动  Zot、Puller、AptMirror。启动 Authentik、NPM Mirror、Baget。此时有 Registry 了。 
+* stage 4 从registry启动 gitlab、编译runner。确保可以编译业务代码。其他非自己编译的代码。真正的业务代码。
+
+> 为什么不上来就启动完整的 Registry？
+
+Zot 依赖 Authentik 提供身份验证。而 Authentik 要想工作必须有 Web 服务能力。要有 Web 能力就必须要有 Caddy 。而运行 Caddy 需要一个 Registry。因此，不能一步到位，而是使用 Bootstrap 的方式。
+
 ## 上 Cloudflare
 
 上 Cloudflare 其实很简单。只需要亿步即可完成：

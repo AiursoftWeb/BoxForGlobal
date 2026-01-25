@@ -21,7 +21,7 @@ if [[ "$1" == "build" ]]; then
     done
 
     # Execute real docker with host injection
-    exec "$REAL_DOCKER" build "${ADD_HOST_ARGS[@]}" "$@"
+    exec "$REAL_DOCKER" build --network=host "${ADD_HOST_ARGS[@]}" "$@"
 else
     # Pass through other commands
     exec "$REAL_DOCKER" "$@"
