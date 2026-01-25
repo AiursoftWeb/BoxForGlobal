@@ -274,9 +274,10 @@ EOF
 function configure_dns_spoofing() {
     print_info "Configuring Local DNS Spoofing..."
 
-    # 1. Install Dnsmasq
-    if ! command -v dnsmasq &> /dev/null; then
-        print_warn "Dnsmasq is not installed. Installing..."
+    # 1. Install Dnsmasq (Check for SERVICE, not just binary)
+    # Ubuntu has dnsmasq-base installed by default which provides the binary but not the service.
+    if ! systemctl list-unit-files dnsmasq.service &>/dev/null; then
+        print_warn "Dnsmasq service is not found (installing full package)..."
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y dnsmasq
     fi
 
