@@ -2,7 +2,7 @@ FROM localhost:8080/public_mirror/ubuntu:25.10
 
 COPY source.list /suggested.sources.list
 
-RUN apt update && apt install -y curl
+RUN apt update && apt install -y curl ca-certificates apt-transport-https
 
 RUN if curl -f https://ftp.uni-stuttgart.de; then \
         echo "Using ftp.uni-stuttgart.de" && \

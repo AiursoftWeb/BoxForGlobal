@@ -19,9 +19,6 @@ mirror_image "caddy:builder"
 echo "Mirroring Caddy latest..."
 mirror_image "caddy:latest"
 
-echo "Mirroring Cloudflared..."
-mirror_image "cloudflare/cloudflared"
-
 echo "Mirroring Postgres..."
 mirror_image "postgres:16-alpine"
 
