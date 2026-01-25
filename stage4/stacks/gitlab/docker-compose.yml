@@ -26,6 +26,7 @@ services:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://gitlab.aiursoft.com'
         gitlab_rails['gitlab_shell_ssh_port'] = 2202
+        gitlab_rails['gitlab_ssh_host'] = 'ssh.aiursoft.com'
         gitlab_sshd['enable'] = true
         gitlab_sshd['listen_address'] = '[::]:2202'
         gitlab_rails['gitlab_default_theme'] = 2
@@ -35,13 +36,57 @@ services:
         nginx['redirect_http_to_https'] = false
         nginx['proxy_protocol'] = false
         nginx['http2_enabled'] = true
-        nginx['real_ip_trusted_addresses'] = ['172.18.0.0/16']
+        nginx['real_ip_trusted_addresses'] = ['10.0.0.0/8']
         nginx['real_ip_header'] = 'X-Forwarded-For'
         nginx['real_ip_recursive'] = 'on'
-        prometheus_monitoring['enable'] = false
-        sidekiq['metrics_enabled'] = false
+        gitlab_rails['omniauth_allow_single_sign_on'] = ['openid_connect']
+        gitlab_rails['omniauth_sync_email_from_provider'] = 'openid_connect'
+        gitlab_rails['omniauth_sync_profile_from_provider'] = ['openid_connect']
+        gitlab_rails['omniauth_sync_profile_attributes'] = ['email']
+        gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'openid_connect'
+        gitlab_rails['omniauth_block_auto_created_users'] = false
+        gitlab_rails['omniauth_auto_link_user'] = ['openid_connect']
+        gitlab_rails['omniauth_allow_bypass_two_factor'] = ['openid_connect']
+        gitlab_rails['omniauth_providers'] = [
+          {
+            name: 'openid_connect',
+            label: 'Aiursoft Login',
+            args: {
+              name: 'openid_connect',
+              scope: ['openid','profile','email','groups'],
+              response_type: 'code',
+              issuer: 'https://auth.aiursoft.com/application/o/gitlab/',
+              discovery: true,
+              client_auth_method: 'query',
+              uid_field: 'preferred_username',
+              send_scope_to_token_endpoint: 'true',
+              pkce: true,
+              client_options: {
+                identifier: '{{GITLAB_CLIENT_ID}}',
+                secret: '{{GITLAB_CLIENT_SECRET}}',
+                redirect_uri: 'https://gitlab.aiursoft.com/users/auth/openid_connect/callback',
+                gitlab: {
+                  admin_groups: ["gitlab-admins"],
+                  groups_attribute: "groups"
+                }
+              }
+            }
+          }
+        ]
+        puma['worker_processes'] = 2
+        puma['min_threads'] = 1
+        puma['max_threads'] = 4
         puma['exporter_enabled'] = false
-        # SMTP 配置（Mailcow）
+        sidekiq['concurrency'] = 2
+        sidekiq['max_concurrency'] = 10
+        sidekiq['min_concurrency'] = nil
+        sidekiq['metrics_enabled'] = false
+        postgresql['shared_buffers'] = "256MB"
+        prometheus['enable'] = false
+        prometheus_monitoring['enable'] = false
+        alertmanager['enable'] = false
+        node_exporter['enable'] = false
+        gitlab_exporter['enable'] = false
         gitlab_rails['smtp_enable'] = true
         gitlab_rails['smtp_address'] = "mail.aiursoft.com"
         gitlab_rails['smtp_port'] = 587
