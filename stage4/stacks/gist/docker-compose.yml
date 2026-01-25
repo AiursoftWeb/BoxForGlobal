@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  app:
+    image: ghcr.io/thomiceli/opengist
+    networks:
+      - proxy_app
+    volumes:
+      - gist-data:/opengist
+    environment:
+      - OG_OIDC_PROVIDER_NAME=Aiursoft
+      - OG_OIDC_CLIENT_KEY={{OPENGIST_CLIENT_ID}}
+      - OG_OIDC_SECRET={{OPENGIST_CLIENT_SECRET}}
+      - 'OG_OIDC_DISCOVERY_URL=https://auth.aiursoft.com/application/o/opengist/.well-known/openid-configuration'
+      - OG_OIDC_GROUP_CLAIM_NAME=groups
+      - OG_OIDC_ADMIN_GROUP=gist-admins
+    stop_grace_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+volumes:
+  gist-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/gist-data
+
+networks:
+  proxy_app:
+    external: true
