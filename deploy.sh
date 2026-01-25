@@ -574,7 +574,7 @@ print_ok "Starting Zot, Puller, AptMirror and Authentik..."
 deploy stage3/stacks/zot/docker-compose.yml zot
 deploy stage3/stacks/puller/docker-compose.yml puller
 deploy stage3/stacks/aptmirror/docker-compose.yml aptmirror
-deploy stage3/stacks/authentik/dockeer-compose.yml authentik
+deploy stage3/stacks/authentik/docker-compose.yml authentik
 deploy stage3/stacks/nuget/docker-compose.yml nuget
 deploy stage3/stacks/npm/docker-compose.yml npm
 
