@@ -25,6 +25,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
       zip \
       unzip \
       tar \
+      docker.io \
       gzip \
       iputils-ping \
       net-tools \
@@ -61,7 +62,6 @@ RUN curl -LJO "https://s3.dualstack.us-east-1.amazonaws.com/gitlab-runner-downlo
 
 # Enable docker in docker
 RUN usermod -aG docker root && \
-    usermod -aG systemd-journal gitlab-runner && \
     usermod -aG docker gitlab-runner && \
     usermod -aG sudo gitlab-runner
 
