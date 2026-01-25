@@ -11,7 +11,7 @@
 			roll_size 1gb
 			roll_uncompressed
 		}
-		level debug
+		level info
 	}
 
 	servers :443 {
