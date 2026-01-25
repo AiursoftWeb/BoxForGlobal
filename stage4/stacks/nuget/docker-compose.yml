@@ -27,7 +27,7 @@ services:
         delay: 60s
 
   db:
-    image: hub.aiursoft.com/mysql
+    image: mysql
     volumes:
       - db:/var/lib/mysql
     environment:
