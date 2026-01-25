@@ -554,7 +554,7 @@ done
 print_warn "=============================================================================="
 print_warn "   Ending stage 2: Basic web infrastructure is ready."
 print_warn ""
-print_warn "   Starting stage 3: Mission is to build and start Zot, Puller, AptMirror and Authentik"
+print_warn "   Starting stage 3: Mission is to build and start registries and authentik"
 print_warn "=============================================================================="
 sleep 3
 
@@ -570,21 +570,13 @@ print_ok "Building local aptmirror..."
 sudo docker build ./stage3/images/aptmirror -t localhost:8080/box_starting/local_aptmirror:latest
 sudo docker push localhost:8080/box_starting/local_aptmirror:latest
 
-print_ok "Building local runner..."
-sudo docker build ./stage3/images/runner -t localhost:8080/box_starting/local_runner:latest
-sudo docker push localhost:8080/box_starting/local_runner:latest
-
 print_ok "Starting Zot, Puller, AptMirror and Authentik..."
 deploy stage3/stacks/zot/docker-compose.yml zot
 deploy stage3/stacks/puller/docker-compose.yml puller
 deploy stage3/stacks/aptmirror/docker-compose.yml aptmirror
-deploy stage3/stacks/authentik/docker-compose.yml authentik
-
-print_ok "Making sure the authentik is ready..."
-while curl -s https://auth.aiursoft.com > /dev/null; [ $? -ne 0 ]; do
-    print_warn "Waiting for authentik (https://auth.aiursoft.com) to start... ETA: 25s"
-    sleep 1
-done
+deploy stage3/stacks/authentik/dockeer-compose.yml authentik
+deploy stage3/stacks/nuget/docker-compose.yml nuget
+deploy stage3/stacks/npm/docker-compose.yml npm
 
 print_ok "Making sure the zot is ready..."
 sleep 5 # Could not trust result in the first few seconds, because the old zot might still be running
@@ -594,11 +586,15 @@ while curl -s https://hub.aiursoft.com > /dev/null; [ $? -ne 0 ]; do
 done
 
 print_warn "=============================================================================="
-print_warn "   Ending stage 3: Zot, Puller, AptMirror and Authentik are ready."
+print_warn "   Ending stage 3: Registries and Authentik are ready."
 print_warn ""
 print_warn "   Starting stage 4: Mission is to deploy business stacks"
 print_warn "=============================================================================="
 sleep 3
+
+print_ok "Building local runner..."
+sudo docker build ./stage4/images/runner -t localhost:8080/box_starting/local_runner:latest
+sudo docker push localhost:8080/box_starting/local_runner:latest
 
 # /swarm-vol/click-house/config_override.xml
 print_ok "Copying ClickHouse config override file..."

@@ -4,7 +4,7 @@ services:
   app:
     depends_on:
       - db
-    image: hub.aiursoft.com/aiursoft/baget
+    image: localhost:8080/public_mirror/aiursoft/baget
     volumes:
       - data:/data/files
       - aspnet:/data/.aspnet
@@ -27,7 +27,7 @@ services:
         delay: 60s
 
   db:
-    image: mysql
+    image: localhost:8080/public_mirror/aiursoft/baget
     volumes:
       - db:/var/lib/mysql
     environment:
