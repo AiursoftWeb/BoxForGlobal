@@ -1,7 +1,10 @@
 #!/bin/bash
 set -e
 
-cd /app
+#cd /app
+
+LOCAL_DOCKER_PASSWORD=zak_4befcf5778aa4725b383ec6044aeb526
+LOCAL_DOCKER_USERNAME=anduin@aiursoft.com
 
 # Color definitions
 RED='\033[0;31m'
@@ -161,6 +164,8 @@ mirror_docker() {
 
 must_login_local_registry
 try_docker_login
+mirror_docker "verdaccio/verdaccio"
+mirror_docker "nvidia/cuda:12.6.2-devel-ubuntu24.04"
 mirror_docker "24oi/oi-wiki"
 mirror_docker "alpine"
 mirror_docker "andyzhangx/samba:win-fix"
@@ -265,7 +270,6 @@ mirror_docker "node"
 mirror_docker "node:16-alpine"
 mirror_docker "node:21-alpine"
 mirror_docker "node:22-alpine"
-mirror_docker "node:24-alpine"
 mirror_docker "nvidia/cuda:11.6.2-base-ubuntu20.04"
 mirror_docker "nvidia/cuda:11.8.0-devel-ubuntu22.04"
 mirror_docker "nvidia/cuda:12.6.2-devel-ubuntu24.04"
