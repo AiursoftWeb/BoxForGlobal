@@ -271,6 +271,59 @@ EOF
     fi
 }
 
+function configure_dns_spoofing() {
+    print_info "Configuring Local DNS Spoofing..."
+
+    # 1. Install Dnsmasq
+    if ! command -v dnsmasq &> /dev/null; then
+        print_warn "Dnsmasq is not installed. Installing..."
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y dnsmasq
+    fi
+
+    # 2. Get Docker Bridge IP
+    DOCKER_IP=$(ip -4 addr show docker0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | head -n 1 || echo "172.17.0.1")
+    print_info "Docker Bridge IP detected: $DOCKER_IP"
+
+    # 3. Discover Domains
+    print_info "Scanning for domains to spoof..."
+    # Reuse logic to find all domains from stack configurations
+    # We look for lines like "domain.com {" in .conf files
+    DOMAINS=$(grep -hE "^[a-zA-Z0-9.-]+\.[a-zA-Z]+ \{" \
+        ./stage2/stacks/**/*.conf \
+        ./stage3/stacks/**/*.conf \
+        ./stage4/stacks/**/*.conf \
+        2>/dev/null | sed 's/ {.*//' | sort -u)
+
+    # 4. Write Dnsmasq Configuration
+    CONF_FILE="/etc/dnsmasq.d/docker-spoof.conf"
+    TMP_CONF=$(mktemp)
+
+    echo "# Docker Spoofing Rules" > "$TMP_CONF"
+    echo "# Map domains to Docker Bridge IP ($DOCKER_IP)" >> "$TMP_CONF"
+    
+    while IFS= read -r domain; do
+        if [ -n "$domain" ]; then
+            echo "address=/$domain/$DOCKER_IP" >> "$TMP_CONF"
+        fi
+    done <<< "$(echo "$DOMAINS" | sort -u)"
+
+    # Add 8.8.8.8 as upstream fallback (optional but good for stability)
+    # create /etc/dnsmasq.d/upstream.conf? No, usually dnsmasq uses /etc/resolv.conf
+    # We just need to spoof specific domains.
+
+    if ! cmp -s "$TMP_CONF" "$CONF_FILE"; then
+        print_warn "DNS spoofing configuration changed. Updating..."
+        sudo mv "$TMP_CONF" "$CONF_FILE"
+        print_ok "Restarting Dnsmasq..."
+        sudo systemctl restart dnsmasq
+    else
+        rm "$TMP_CONF"
+        print_ok "DNS spoofing configuration is up-to-date."
+    fi
+
+    judge "Configure DNS Spoofing"
+}
+
 function clean_up_docker() {
     # if there is no stack deployed, run the system prune command
     # else, log and skip cleaning.
@@ -356,6 +409,10 @@ better_performance
 # Setup docker auto clean
 print_ok "Setting up docker auto clean..."
 setup_docker_auto_clean
+
+# Setup local DNS spoofing
+print_ok "Setting up local DNS spoofing..."
+configure_dns_spoofing
 
 print_ok "Cleaning up docker (if no stack deployed)..."
 clean_up_docker
@@ -445,7 +502,8 @@ if [ -f /usr/bin/nvidia-smi ]; then
   "default-runtime": "nvidia",
   "node-generic-resources": [
     $JSON_GPU_RESOURCES
-  ]
+  ],
+  "dns": ["$DOCKER_IP", "8.8.8.8"]
 }
 EOF
 
@@ -464,7 +522,8 @@ else
     "max-size": "100m",
     "max-file": "3"
   },
-  "userland-proxy": false
+  "userland-proxy": false,
+  "dns": ["$DOCKER_IP", "8.8.8.8"]
 }
 EOF
 fi
