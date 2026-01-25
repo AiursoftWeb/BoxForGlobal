@@ -1,7 +1,7 @@
 FROM localhost:8080/box_starting/local_ubuntu
 WORKDIR /app
 RUN apt-get update && \
-    apt install -y cron python3 python-is-python3 python3-pip curl tmux && \
+    apt install -y cron python3 python-is-python3 python3-pip curl tmux docker.io && \
     rm -rf /var/lib/apt/lists/*
 
 ADD "https://api.github.com/repos/regclient/regclient/commits?per_page=1" latest_commit

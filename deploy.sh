@@ -554,7 +554,7 @@ done
 print_warn "=============================================================================="
 print_warn "   Ending stage 2: Basic web infrastructure is ready."
 print_warn ""
-print_warn "   Starting stage 3: Mission is to build and start Authentik and Zot"
+print_warn "   Starting stage 3: Mission is to build and start Authentik Puller and Zot"
 print_warn "=============================================================================="
 sleep 3
 
@@ -585,7 +585,7 @@ while curl -s https://hub.aiursoft.com > /dev/null; [ $? -ne 0 ]; do
 done
 
 print_warn "=============================================================================="
-print_warn "   Ending stage 3: Authentik and Zot are ready."
+print_warn "   Ending stage 3: Authentik Puller and Zot are ready."
 print_warn ""
 print_warn "   Starting stage 4: Mission is to deploy business stacks"
 print_warn "=============================================================================="
