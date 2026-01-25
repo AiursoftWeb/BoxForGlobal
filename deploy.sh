@@ -562,7 +562,12 @@ print_ok "Building local zot..."
 sudo docker build ./stage3/images/zot -t localhost:8080/box_starting/local_zot:latest
 sudo docker push localhost:8080/box_starting/local_zot:latest
 
-print_ok "Starting Authentik and Zot..."
+print_ok "Building local puller..."
+sudo docker build ./stage3/images/puller -t localhost:8080/box_starting/local_puller:latest
+sudo docker push localhost:8080/box_starting/local_puller:latest
+
+print_ok "Starting Authentik puller and Zot..."
+deploy stage3/stacks/puller/docker-compose.yml puller
 deploy stage3/stacks/authentik/docker-compose.yml authentik
 deploy stage3/stacks/zot/docker-compose.yml zot
 
