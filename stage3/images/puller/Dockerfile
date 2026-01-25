@@ -23,8 +23,8 @@ RUN chmod +x /app/entry.sh
 # Register a crontab job to run entry every day 3:00
 #RUN crontab -l | { cat; echo "0 3 * * * /entry.sh"; } | crontab -
 
-# Run /entry.sh with tmux
-RUN echo "0 3 * * * root tmux new-session -d -s entry /app/entry.sh" > /etc/cron.d/entry-cron && echo "" >> /etc/cron.d/entry-cron
+# Run /entry.sh with tmux at 20 minutes past every hour
+RUN echo "20 * * * * root tmux new-session -d -s entry /app/entry.sh" > /etc/cron.d/entry-cron && echo "" >> /etc/cron.d/entry-cron
 RUN chmod 0644 /etc/cron.d/entry-cron
 
 # Run this job at the beginning with verbose output
