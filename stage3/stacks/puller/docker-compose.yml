@@ -11,6 +11,8 @@ services:
       - LOCAL_DOCKER_PASSWORD={{PULLER_LOCAL_DOCKER_PASSWORD}}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - proxy_app
     stop_grace_period: 20s
     deploy:
       replicas: 1
@@ -22,3 +24,7 @@ services:
         order: start-first
         delay: 5s
 
+
+networks:
+  proxy_app:
+    external: true
