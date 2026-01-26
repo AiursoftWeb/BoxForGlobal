@@ -305,8 +305,13 @@ function create_network() {
     subnet=$2
     known_networks=$(sudo docker network ls --format '{{.Name}}')
     if ! echo "$known_networks" | grep -Fxq "$network_name"; then
-        print_warn "Creating network $network_name with subnet $subnet..."
-        networkId=$(sudo docker network create --driver overlay --attachable --subnet $subnet --scope swarm $network_name)
+        print_warn "Creating network $network_name with subnet $subnet and MTU 1400..."
+        networkId=$(sudo docker network create \
+            --driver overlay \
+            --attachable \
+            --subnet $subnet \
+            --opt com.docker.network.driver.mtu=1400 \
+            --scope swarm $network_name)
         print_ok "Network $network_name created with id $networkId"
     fi
 }
@@ -434,6 +439,7 @@ if [ -f /usr/bin/nvidia-smi ]; then
 
   sudo tee /etc/docker/daemon.json > /dev/null <<EOF
 {
+  "mtu": 1400,
   "data-root": "/swarm-vol/docker-data",
   "insecure-registries": [
     "localhost:8080"
@@ -464,6 +470,7 @@ else
   
   sudo tee /etc/docker/daemon.json > /dev/null <<EOF
 {
+  "mtu": 1400,
   "data-root": "/swarm-vol/docker-data",
   "insecure-registries": [
     "localhost:8080"

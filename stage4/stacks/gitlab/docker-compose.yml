@@ -101,15 +101,15 @@ services:
         gitlab_rails['gitlab_email_reply_to'] = 'service@aiursoft.com'
     stop_grace_period: 60s
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      test: [ "CMD", "curl", "-f", "http://localhost:80" ]
       interval: 60s
       timeout: 10s
       retries: 3
     deploy:
       resources:
         limits:
-          cpus: '3.0'
-          memory: 4G
+          cpus: '4.0'
+          memory: 7G
       update_config:
         order: stop-first
         delay: 60s
