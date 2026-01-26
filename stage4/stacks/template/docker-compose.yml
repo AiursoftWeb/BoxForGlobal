@@ -1,0 +1,91 @@
+version: '3.9'
+
+services:
+  docs:
+    image: hub.aiursoft.com/aiursoft/template-docs
+    networks:
+      - proxy_app
+    stop_grace_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  app:
+    depends_on:
+      - db
+    image: hub.aiursoft.com/aiursoft/template
+    volumes:
+      - template-aspnet:/data/.aspnet/
+      - template-files:/data/files
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=template;Uid=template;Pwd=<template_password>;
+      - ConnectionStrings__DbType=MySql
+      - Storage__Path=/data/files
+      - AppSettings__AuthProvider=OIDC
+      - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/template
+      - AppSettings__OIDC__ClientId={{TEMPLATE_CLIENT_ID}}
+      - AppSettings__OIDC__ClientSecret={{TEMPLATE_CLIENT_SECRET}}
+    networks:
+      - internal
+      - proxy_app
+    stop_grace_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+  db:
+    image: hub.aiursoft.com/mysql
+    volumes:
+      - template-db:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=template
+      - MYSQL_USER=template
+      - MYSQL_PASSWORD=<template_password>
+    networks:
+      - internal
+    stop_grace_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+volumes:
+  template-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/template-data/files
+  template-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/template-data/aspnet
+  template-db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/template-data/mysql
+
+networks:
+  proxy_app:
+    external: true
+  internal:
+    driver: overlay
