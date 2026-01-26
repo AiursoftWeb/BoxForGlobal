@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   grafana:
-    image: grafana/grafana
+    image: hub.aiursoft.com/grafana/grafana
     volumes:
       - grafana-config:/etc/grafana
       - grafana-data:/var/lib/grafana
