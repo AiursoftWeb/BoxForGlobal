@@ -43,7 +43,8 @@ COPY --from=config-build-env /app/Dist/Caddyfile /etc/caddy/Caddyfile
 # We inject a dummy token here just to pass the validation check during build.
 # The real token will be provided at runtime via Docker Service environment variables.
 # Note: The token must look like a valid Cloudflare token (approx 40 chars) to pass validation.
-RUN CLOUDFLARE_API_TOKEN=ThisIsAFakeTokenForValidationOnly123456 caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile && \
+RUN caddy fmt --overwrite /etc/caddy/Caddyfile && \
+    CLOUDFLARE_API_TOKEN=ThisIsAFakeTokenForValidationOnly123456 caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile && \
     mkdir -p /var/log/caddy /data/caddy/logs && \
     touch /data/caddy/logs/web.log
 
