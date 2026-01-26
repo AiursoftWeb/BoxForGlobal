@@ -390,6 +390,7 @@ for network in $external_networks; do
 done
 
 print_ok "Creating data folders..."
+sudo mkdir -p /swarm-vol/docker-data
 find . -name 'docker-compose.yml' | while read file; do
   awk '{if(/device:/) print $2}' "$file" | while read -r path; do
     sudo mkdir -p "$path"
@@ -427,6 +428,7 @@ if [ -f /usr/bin/nvidia-smi ]; then
 
   sudo tee /etc/docker/daemon.json > /dev/null <<EOF
 {
+  "data-root": "/swarm-vol/docker-data",
   "insecure-registries": [
     "localhost:8080"
   ],
@@ -456,6 +458,7 @@ else
   
   sudo tee /etc/docker/daemon.json > /dev/null <<EOF
 {
+  "data-root": "/swarm-vol/docker-data",
   "insecure-registries": [
     "localhost:8080"
   ],
