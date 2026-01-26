@@ -391,9 +391,15 @@ done
 
 print_ok "Creating data folders..."
 sudo mkdir -p /swarm-vol/docker-data
+
 find . -name 'docker-compose.yml' | while read file; do
   awk '{if(/device:/) print $2}' "$file" | while read -r path; do
-    sudo mkdir -p "$path"
+    if [ ! -d "$path" ]; then
+        print_info "Creating directory: $path"
+        sudo mkdir -p "$path"
+    else
+        : # no-op
+    fi
   done
 done
 
