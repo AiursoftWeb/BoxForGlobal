@@ -561,6 +561,17 @@ print_warn "   Starting stage 3: Mission is to build and start registries and au
 print_warn "=============================================================================="
 sleep 3
 
+deploy stage3/stacks/authentik/docker-compose.yml authentik
+deploy stage3/stacks/nuget/docker-compose.yml nuget
+deploy stage3/stacks/npm/docker-compose.yml npm
+
+print_ok "Making sure the authentik is ready..."
+sleep 5
+while [[ ! "$(curl -s -o /dev/null -w "%{http_code}" https://auth.aiursoft.com)" =~ ^(200|302)$ ]]; do
+    print_warn "Waiting for authentik (https://auth.aiursoft.com) to start... ETA: 25s"
+    sleep 1
+done
+
 print_ok "Building local zot..."
 sudo docker build ./stage3/images/zot -t localhost:8080/box_starting/local_zot:latest
 sudo docker push localhost:8080/box_starting/local_zot:latest
@@ -577,13 +588,10 @@ print_ok "Starting Zot, Puller, AptMirror and Authentik..."
 deploy stage3/stacks/zot/docker-compose.yml zot
 deploy stage3/stacks/puller/docker-compose.yml puller
 deploy stage3/stacks/aptmirror/docker-compose.yml aptmirror
-deploy stage3/stacks/authentik/docker-compose.yml authentik
-deploy stage3/stacks/nuget/docker-compose.yml nuget
-deploy stage3/stacks/npm/docker-compose.yml npm
 
 print_ok "Making sure the zot is ready..."
-sleep 5 # Could not trust result in the first few seconds, because the old zot might still be running
-while curl -s https://hub.aiursoft.com > /dev/null; [ $? -ne 0 ]; do
+sleep 5
+while [ "$(curl -s -o /dev/null -w "%{http_code}" https://hub.aiursoft.com)" != "200" ]; do
     print_warn "Waiting for registry (https://hub.aiursoft.com) to start... ETA: 25s"
     sleep 1
 done
