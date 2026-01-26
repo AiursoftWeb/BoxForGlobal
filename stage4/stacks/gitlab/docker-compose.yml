@@ -125,6 +125,12 @@ services:
       # The actual jobrunner will not use the internal endpoint.
       - GITLAB_ENDPOINT=http://gitlab
       - GITLAB_RUNNER_TOKEN={{GITLAB_RUNNER_TOKEN}}
+      - DOCKER_USERNAME={{DOCKER_HUB_USERNAME}}
+      - DOCKER_PASSWORD={{DOCKER_DOCKER_HUB_PASSWORDPASSWORD}}
+      - LOCAL_DOCKER_USERNAME={{LOCAL_DOCKER_USERNAME}}
+      - LOCAL_DOCKER_PASSWORD={{LOCAL_DOCKER_PASSWORD}}
+      - LOCAL_NUGET_API_KEY={{LOCAL_NUGET_PUBLISH_KEY}}
+      - NUGET_API_KEY={{NUGET_API_KEY}}
     networks:
       - internal
       - proxy_app
@@ -148,6 +154,12 @@ services:
     environment:
       - GITLAB_ENDPOINT=http://gitlab
       - GITLAB_RUNNER_TOKEN={{GITLAB_RUNNER_TOKEN_FOR_GROUP}}
+      - DOCKER_USERNAME={{DOCKER_HUB_USERNAME}}
+      - DOCKER_PASSWORD={{DOCKER_DOCKER_HUB_PASSWORDPASSWORD}}
+      - LOCAL_DOCKER_USERNAME={{LOCAL_DOCKER_USERNAME}}
+      - LOCAL_DOCKER_PASSWORD={{LOCAL_DOCKER_PASSWORD}}
+      - LOCAL_NUGET_API_KEY={{LOCAL_NUGET_PUBLISH_KEY}}
+      - NUGET_API_KEY={{NUGET_API_KEY}}
     networks:
       - internal
       - proxy_app

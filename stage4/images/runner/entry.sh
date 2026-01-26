@@ -41,7 +41,13 @@ gitlab-runner register \
     --url "$gitlab_endpoint" \
     --token $token \
     --executor "shell" \
-    --custom_build_dir-enabled=true
+    --custom_build_dir-enabled=true \
+    --env "DOCKER_USERNAME=${DOCKER_USERNAME}" \
+    --env "DOCKER_PASSWORD=${DOCKER_PASSWORD}" \
+    --env "LOCAL_DOCKER_USERNAME=${LOCAL_DOCKER_USERNAME}" \
+    --env "LOCAL_DOCKER_PASSWORD=${LOCAL_DOCKER_PASSWORD}" \
+    --env "LOCAL_NUGET_API_KEY=${LOCAL_NUGET_API_KEY}" \
+    --env "NUGET_API_KEY=${NUGET_API_KEY}"
 
 #gitlab-runner start
 gitlab-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner

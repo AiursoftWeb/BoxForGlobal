@@ -12,7 +12,7 @@ services:
       - ConnectionStrings__DefaultConnection=Server=db;Database=baget;Uid=baget;Pwd=<baget_password>;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
-      - ApiKey={{NUGET_PUBLISH_KEY}}
+      - ApiKey={{LOCAL_NUGET_PUBLISH_KEY}}
     networks:
       - proxy_app
       - internal
