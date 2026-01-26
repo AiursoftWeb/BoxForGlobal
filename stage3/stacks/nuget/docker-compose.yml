@@ -27,7 +27,7 @@ services:
         delay: 60s
 
   db:
-    image: localhost:8080/public_mirror/aiursoft/baget
+    image: localhost:8080/public_mirror/mysql
     volumes:
       - db:/var/lib/mysql
     environment:
