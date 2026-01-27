@@ -25,6 +25,7 @@ services:
       # Create token at: Cloudflare Dashboard -> My Profile -> API Tokens
       # Required permissions: Zone:DNS:Edit for target zones
       - CLOUDFLARE_API_TOKEN={{CLOUDFLARE_API_TOKEN}}
+      - ALLOW_INCOMING_IPS=127.0.0.1
     volumes:
       - sites-data:/data
     stop_grace_period: 60s
