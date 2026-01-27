@@ -5,11 +5,13 @@ echo "Starting GitLab Runner registration script..."
 
 # Make sure the docker.sock has correct permissions
 if [ -S /var/run/docker.sock ]; then
+    echo "Docker socket found, adjusting permissions..."
     # We need that socket to create new job containers
-    chown root:docker /var/run/docker.sock
+    chown root:docker /var/run/docker.sock || true
     chmod 660 /var/run/docker.sock
 else
-    echo "Docker socket not found. Exiting..."
+    echo "Error: Docker socket (/var/run/docker.sock) not found."
+    echo "Please ensure you pass '-v /var/run/docker.sock:/var/run/docker.sock' when running this container."
     exit 1
 fi
 
@@ -17,7 +19,7 @@ fi
 gitlab_endpoint=${GITLAB_ENDPOINT:-http://gitlab}
 
 echo "Checking if GitLab server $gitlab_endpoint is reachable"
-if ! curl -s $gitlab_endpoint; then
+if ! curl -s --max-time 10 $gitlab_endpoint > /dev/null; then
     echo "GitLab server is not reachable. Exiting..."
     exit 1
 fi
@@ -33,13 +35,11 @@ if [ -z "$token" ]; then
 fi
 
 echo "Registering runner with token $token with name $HOSTNAME"
-
-echo "Using job docker socket for job containers: $job_docker_to_use_socket"
 gitlab-runner register \
-    --name $HOSTNAME \
+    --name "$HOSTNAME" \
     --non-interactive \
     --url "$gitlab_endpoint" \
-    --token $token \
+    --token "$token" \
     --executor "shell" \
     --custom_build_dir-enabled=true \
     --env "DOCKER_USERNAME=${DOCKER_USERNAME}" \

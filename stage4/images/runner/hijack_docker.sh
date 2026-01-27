@@ -1,7 +1,12 @@
 #!/bin/bash
 
 REAL_DOCKER="/usr/bin/docker"
-HOST_IP="172.17.0.1"
+
+# Determine host gateway IP dynamically; fallback to default bridge IP
+HOST_IP=$(ip route show | grep default | awk '{print $3}')
+if [ -z "$HOST_IP" ]; then
+    HOST_IP="172.17.0.1"
+fi
 
 # Target domains to inject
 TARGET_DOMAINS=(
