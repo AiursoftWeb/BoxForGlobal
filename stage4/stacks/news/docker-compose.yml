@@ -9,6 +9,9 @@ services:
       - app-files:/data/files
       - app-aspnet:/data/.aspnet
     environment:
+      - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
+      - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
+      - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
       - ConnectionStrings__DefaultConnection=Server=app-db;Database=app;Uid=app;Pwd=<app_password>;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
