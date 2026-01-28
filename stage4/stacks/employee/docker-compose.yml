@@ -4,7 +4,7 @@ services:
   app:
     depends_on:
       - db
-    image: hub.aiursoft.com/aiursoft/employeecenter:latest
+    image: aiursoft/employeecenter:latest
     volumes:
       - employeecenter-aspnet:/data/.aspnet/
       - employeecenter-files:/data/files
@@ -30,7 +30,7 @@ services:
         delay: 60s
 
   db:
-    image: hub.aiursoft.com/mysql
+    image: mysql
     volumes:
       - employeecenter-db:/var/lib/mysql
     environment:
