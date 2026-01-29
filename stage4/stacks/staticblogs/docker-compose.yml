@@ -1,0 +1,95 @@
+version: '3.9'
+
+services:
+  aimer:
+    image: aiursoft/blog
+    networks:
+      - proxy_app
+    stop_grace_period: 20s
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  edgeneko:
+    image: aiursoft/blogv2-src
+    networks:
+      - proxy_app
+    stop_grace_period: 20s
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  comments:
+    image: artalk/artalk-go
+    networks:
+      - proxy_app
+      - internal
+    volumes:
+      - artalk-data:/data
+    depends_on:
+      - db
+    stop_grace_period: 20s
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  db:
+    image: mysql
+    networks: 
+      - internal
+    volumes:
+      - edgeneko-blog-db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Password1234
+      - MYSQL_DATABASE=artalk
+    stop_grace_period: 60s
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+volumes:
+  edgeneko-blog-db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/edgeneko-blog-comment/db
+  artalk-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/edgeneko-blog-comment/data/
+
+networks:
+  proxy_app:
+    external: true
