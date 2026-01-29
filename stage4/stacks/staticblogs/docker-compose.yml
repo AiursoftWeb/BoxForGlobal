@@ -93,3 +93,5 @@ volumes:
 networks:
   proxy_app:
     external: true
+  internal:
+    driver: overlay
