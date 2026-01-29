@@ -17,7 +17,7 @@ services:
         delay: 5s
 
   fissssssh:
-    image: fissssssh/fissssssh.gitlab.io
+    image: aiursoft/fissssssh.gitlab.io
     networks:
       - proxy_app
     stop_grace_period: 20s
