@@ -16,6 +16,21 @@ services:
         order: start-first
         delay: 5s
 
+  fissssssh:
+    image: hub.aiursoft.com/fissssssh/fissssssh.gitlab.io
+    networks:
+      - proxy_app
+    stop_grace_period: 20s
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+      update_config:
+        order: start-first
+        delay: 5s
+
   edgeneko:
     image: aiursoft/blogv2-src
     networks:
