@@ -1,0 +1,36 @@
+version: '3.9' 
+
+services:
+  web:
+    image: hub.aiursoft.com/aiursoft/static
+    volumes:
+      - pub-data:/data
+    networks:
+      - proxy_app
+    stop_grace_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+      update_config:
+        order: stop-first
+        delay: 60s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    entrypoint: ["sh", "-c", "/app/static --port 5000 --path /data --allow-directory-browsing"]
+
+networks:
+  proxy_app:
+    external: true
+
+volumes:
+  pub-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/pubshare/media
