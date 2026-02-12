@@ -626,10 +626,6 @@ print_ok "Building local zot..."
 sudo docker build ./stage3/images/zot -t localhost:8080/box_starting/local_zot:latest
 sudo docker push localhost:8080/box_starting/local_zot:latest
 
-print_ok "Building local puller..."
-sudo docker build ./stage3/images/puller -t localhost:8080/box_starting/local_puller:latest
-sudo docker push localhost:8080/box_starting/local_puller:latest
-
 print_ok "Building local aptmirror..."
 sudo docker build ./stage3/images/aptmirror -t localhost:8080/box_starting/local_aptmirror:latest
 sudo docker push localhost:8080/box_starting/local_aptmirror:latest
@@ -638,9 +634,8 @@ print_ok "Building local ppamirror..."
 sudo docker build ./stage3/images/ppamirror -t localhost:8080/box_starting/local_ppamirror:latest
 sudo docker push localhost:8080/box_starting/local_ppamirror:latest
 
-print_ok "Starting Zot, Puller, AptMirror and Authentik..."
+print_ok "Starting Zot, aptMirror and Authentik..."
 deploy stage3/stacks/zot/docker-compose.yml zot
-deploy stage3/stacks/puller/docker-compose.yml puller
 deploy stage3/stacks/aptmirror/docker-compose.yml aptmirror
 deploy stage3/stacks/ppamirror/docker-compose.yml ppamirror
 
