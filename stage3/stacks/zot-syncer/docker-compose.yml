@@ -4,7 +4,8 @@ services:
   syncer:
     image: localhost:8080/box_starting/local_zot_syncer
     volumes:
-      - zot-blob:/data/blob
+      - zot-data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
     stop_grace_period: 60s
     deploy:
       resources:
@@ -16,12 +17,12 @@ services:
         delay: 60s
 
 volumes:
-  zot-blob:
+  zot-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /swarm-vol/zot-data/blob
+      device: /swarm-vol/zot-data
 
 networks:
   net:
