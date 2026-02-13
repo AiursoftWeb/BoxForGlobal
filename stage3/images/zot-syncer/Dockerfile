@@ -7,15 +7,16 @@ ENV LANG=C.UTF-8 \
 
 # Install dependencies in one layer
 RUN apt-get update && \
-    apt-get install -y cron rsync docker.io && \
+    apt-get install -y cron rsync docker.io tmux && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy sync script
-COPY entry.sh /app/
+# Copy sync scripts
+COPY entry.sh sync.sh /app/
 
 # Configure everything in one layer: permissions, logs, env, crontab
 # Runs every hour at minute 30
-RUN chmod +x /app/entry.sh && \
+RUN chmod +x /app/entry.sh /app/sync.sh && \
+    mkdir -p /var/log/zot-sync-runs && \
     touch /var/log/zot-sync.log && \
     { \
         echo "LANG=C.UTF-8"; \

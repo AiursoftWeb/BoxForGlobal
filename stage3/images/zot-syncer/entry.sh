@@ -1,44 +1,21 @@
 #!/bin/bash
 set -e
 
-echo "=========================================="
-echo "  Zot Data Sync from Proart"
-echo "  Source: rsync://hub-rsync.aiursoft.com/zot-data/blob/"
-echo "  Target: /data/"
-echo "  Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-echo "=========================================="
+SESSION_NAME="zot-sync"
+LOG_DIR="/var/log/zot-sync-runs"
+mkdir -p "$LOG_DIR"
 
-# ==========================================
-# Phase 1: Additive sync (zot still running)
-# Sync all blob data WITHOUT --delete and WITHOUT DB files
-# This is safe because blobs are content-addressable (immutable)
-# ==========================================
-echo ""
-echo "[Phase 1] Additive blob sync (zot is still running)..."
-rsync -avx \
-    --exclude='cache.db' \
-    --exclude='meta.db' \
-    rsync://hub-rsync.aiursoft.com/zot-data/blob/ /data/blob/
-echo "[Phase 1] Done at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+# Check if a sync session is already running
+if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+    echo "$(date -u '+%Y-%m-%d %H:%M:%S UTC') - Sync session already running, skipping."
+    exit 0
+fi
 
-# ==========================================
-# Phase 2: Final sync with service stop
-# Stop zot -> sync everything with --delete -> start zot
-# This should be very fast since Phase 1 already synced most data
-# ==========================================
-echo ""
-echo "[Phase 2] Stopping zot_server for final sync..."
-docker service scale zot_server=0
-sleep 10
+# Create a timestamped log file for this run
+RUN_LOG="$LOG_DIR/$(date -u '+%Y-%m-%d_%H-%M-%S').log"
+touch "$RUN_LOG"
 
-echo "[Phase 2] Final rsync with --delete..."
-rsync -avx --delete rsync://hub-rsync.aiursoft.com/zot-data/blob/ /data/blob/
-echo "[Phase 2] Final sync done at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+# Start tmux session with the actual sync script
+tmux new-session -d -s "$SESSION_NAME" "bash /app/sync.sh 2>&1 | tee $RUN_LOG; tmux kill-session -t $SESSION_NAME"
 
-echo "[Phase 2] Starting zot_server..."
-docker service scale zot_server=1
-
-echo ""
-echo "=========================================="
-echo "  Sync completed at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-echo "=========================================="
+echo "$(date -u '+%Y-%m-%d %H:%M:%S UTC') - Started sync session, log: $RUN_LOG"
