@@ -634,13 +634,8 @@ print_ok "Building local ppamirror..."
 sudo docker build ./stage3/images/ppamirror -t localhost:8080/box_starting/local_ppamirror:latest
 sudo docker push localhost:8080/box_starting/local_ppamirror:latest
 
-print_ok "Building local zot-syncer..."
-sudo docker build ./stage3/images/zot-syncer -t localhost:8080/box_starting/local_zot_syncer:latest
-sudo docker push localhost:8080/box_starting/local_zot_syncer:latest
-
 print_ok "Starting Zot, aptMirror and Authentik..."
 deploy stage3/stacks/zot/docker-compose.yml zot
-deploy stage3/stacks/zot-syncer/docker-compose.yml zot-syncer
 deploy stage3/stacks/aptmirror/docker-compose.yml aptmirror
 deploy stage3/stacks/ppamirror/docker-compose.yml ppamirror
 
