@@ -13,7 +13,7 @@
         "compat": [
             "docker2s2"
         ],
-        "externalUrl": "https://hub.aiursoft.com",
+        "externalUrl": "https://pubhub.aiursoft.com",
         "accessControl": {
             "repositories": {
                 "**": {

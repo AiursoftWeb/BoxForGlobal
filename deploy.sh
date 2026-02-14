@@ -641,8 +641,8 @@ deploy stage3/stacks/ppamirror/docker-compose.yml ppamirror
 
 print_ok "Making sure the zot is ready..."
 sleep 5
-while [ "$(curl -s -o /dev/null -w "%{http_code}" https://hub.aiursoft.com)" != "200" ]; do
-    print_warn "Waiting for registry (https://hub.aiursoft.com) to start... ETA: 25s"
+while [ "$(curl -s -o /dev/null -w "%{http_code}" https://pubhub.aiursoft.com)" != "200" ]; do
+    print_warn "Waiting for registry (https://pubhub.aiursoft.com) to start... ETA: 25s"
     sleep 1
 done
 

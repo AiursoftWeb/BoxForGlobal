@@ -1,4 +1,3 @@
-#docker pull hub.aiursoft.com/vikunja/vikunja:latest
 version: '3.9'
 
 services:
