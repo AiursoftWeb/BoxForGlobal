@@ -1,9 +1,27 @@
 version: '3.9'
 
 services:
+  shared-db:
+    image: mysql
+    volumes:
+      - shared-db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=shared_password_change_me
+    networks:
+      - shared_db_net
+    stop_grace_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+      update_config:
+        order: stop-first
+        delay: 60s
+
   anduin:
     depends_on:
-      - anduin-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - anduin-files:/data/files
@@ -12,7 +30,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=anduin-db;Database=anduin;Uid=anduin;Pwd=<anduin_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=anduin;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -22,6 +40,7 @@ services:
     networks:
       - anduin_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -62,7 +81,7 @@ services:
       
   jimmoen:
     depends_on:
-      - jimmoen-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - jimmoen-files:/data/files
@@ -71,7 +90,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=jimmoen-db;Database=jimmoen;Uid=jimmoen;Pwd=<jimmoen_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=jimmoen;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -81,6 +100,7 @@ services:
     networks:
       - jimmoen_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -120,7 +140,7 @@ services:
 
   rest:
     depends_on:
-      - rest-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - rest-files:/data/files
@@ -129,7 +149,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=rest-db;Database=rest;Uid=rest;Pwd=<rest_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=rest;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -139,6 +159,7 @@ services:
     networks:
       - rest_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -179,7 +200,7 @@ services:
         
   cody:
     depends_on:
-      - cody-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - cody-files:/data/files
@@ -188,7 +209,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=cody-db;Database=cody;Uid=cody;Pwd=<cody_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=cody;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -198,6 +219,7 @@ services:
     networks:
       - cody_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -237,7 +259,7 @@ services:
 
   gxhao:
     depends_on:
-      - gxhao-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - gxhao-files:/data/files
@@ -246,7 +268,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=gxhao-db;Database=gxhao;Uid=gxhao;Pwd=<gxhao_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=gxhao;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -256,6 +278,7 @@ services:
     networks:
       - gxhao_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -295,7 +318,7 @@ services:
 
   anois:
     depends_on:
-      - anois-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - anois-files:/data/files
@@ -304,7 +327,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=anois-db;Database=anois;Uid=anois;Pwd=<anois_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=anois;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -314,6 +337,7 @@ services:
     networks:
       - anois_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -353,7 +377,7 @@ services:
 
   dvorak:
     depends_on:
-      - dvorak-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - dvorak-files:/data/files
@@ -362,7 +386,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=dvorak-db;Database=dvorak;Uid=dvorak;Pwd=<dvorak_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=dvorak;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -372,6 +396,7 @@ services:
     networks:
       - dvorak_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -411,7 +436,7 @@ services:
 
   kitlau:
     depends_on:
-      - kitlau-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - kitlau-files:/data/files
@@ -420,7 +445,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=kitlau-db;Database=kitlau;Uid=kitlau;Pwd=<kitlau_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=kitlau;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -430,6 +455,7 @@ services:
     networks:
       - kitlau_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -469,7 +495,7 @@ services:
 
   xinboo:
     depends_on:
-      - xinboo-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - xinboo-files:/data/files
@@ -478,7 +504,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=xinboo-db;Database=xinboo;Uid=xinboo;Pwd=<xinboo_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=xinboo;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -488,6 +514,7 @@ services:
     networks:
       - xinboo_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -527,7 +554,7 @@ services:
 
   gbiner:
     depends_on:
-      - gbiner-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - gbiner-files:/data/files
@@ -536,7 +563,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=gbiner-db;Database=gbiner;Uid=gbiner;Pwd=<gbiner_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=gbiner;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -546,6 +573,7 @@ services:
     networks:
       - gbiner_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -585,7 +613,7 @@ services:
 
   rdf:
     depends_on:
-      - rdf-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - rdf-files:/data/files
@@ -594,7 +622,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=rdf-db;Database=rdf;Uid=rdf;Pwd=<rdf_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=rdf;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -604,6 +632,7 @@ services:
     networks:
       - rdf_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -643,7 +672,7 @@ services:
 
   lyx:
     depends_on:
-      - lyx-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - lyx-files:/data/files
@@ -652,7 +681,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=lyx-db;Database=lyx;Uid=lyx;Pwd=<lyx_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=lyx;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -662,6 +691,7 @@ services:
     networks:
       - lyx_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -701,7 +731,7 @@ services:
 
   shubuzuo:
     depends_on:
-      - shubuzuo-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - shubuzuo-files:/data/files
@@ -710,7 +740,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=shubuzuo-db;Database=shubuzuo;Uid=shubuzuo;Pwd=<shubuzuo_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=shubuzuo;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -720,6 +750,7 @@ services:
     networks:
       - shubuzuo_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -759,7 +790,7 @@ services:
 
   lily:
     depends_on:
-      - lily-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - lily-files:/data/files
@@ -768,7 +799,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=lily-db;Database=lily;Uid=lily;Pwd=<lily_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=lily;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -778,6 +809,7 @@ services:
     networks:
       - lily_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -817,7 +849,7 @@ services:
 
   carson:
     depends_on:
-      - carson-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - carson-files:/data/files
@@ -826,7 +858,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=carson-db;Database=carson;Uid=carson;Pwd=<carson_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=carson;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -836,6 +868,7 @@ services:
     networks:
       - carson_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -875,7 +908,7 @@ services:
 
   zoneblog:
     depends_on:
-      - zoneblog-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - zoneblog-files:/data/files
@@ -884,7 +917,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=zoneblog-db;Database=zoneblog;Uid=zoneblog;Pwd=<zoneblog_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=zoneblog;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -894,6 +927,7 @@ services:
     networks:
       - zoneblog_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -934,7 +968,7 @@ services:
       
   yuyuyuyublog:
     depends_on:
-      - yuyuyuyublog-db
+      - shared-db
     image: aiursoft/moongladepure
     volumes:
       - yuyuyuyublog-files:/data/files
@@ -943,7 +977,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
-      - ConnectionStrings__DefaultConnection=Server=yuyuyuyublog-db;Database=yuyuyuyublog;Uid=yuyuyuyublog;Pwd=<yuyuyuyublog_password>;
+      - ConnectionStrings__DefaultConnection=Server=shared-db;Database=yuyuyuyublog;Uid=root;Pwd=shared_password_change_me;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
@@ -953,6 +987,7 @@ services:
     networks:
       - yuyuyuyublog_app
       - proxy_app
+      - shared_db_net
     stop_grace_period: 60s
     deploy:
       resources:
@@ -987,6 +1022,8 @@ services:
 networks:
   proxy_app:
     external: true
+  shared_db_net:
+    driver: overlay
   anduin_app:
     driver: overlay
   jimmoen_app:
@@ -1023,6 +1060,12 @@ networks:
     driver: overlay  
 
 volumes:
+  shared-db-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/moongladepure/shared/db
   anduin-aspnet:
     driver: local
     driver_opts:
