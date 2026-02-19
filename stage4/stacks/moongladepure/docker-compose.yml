@@ -38,7 +38,6 @@ services:
       - OIDC__ClientId={{ANDUIN_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{ANDUIN_BLOG_CLIENT_SECRET}}
     networks:
-      - anduin_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -51,34 +50,6 @@ services:
         order: stop-first
         delay: 60s
   
-  anduin-db:
-    image: mysql
-    volumes:
-      - anduin-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=anduin
-      - MYSQL_USER=anduin
-      - MYSQL_PASSWORD=<anduin_password>
-    networks:
-      - anduin_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
-      update_config:
-        order: stop-first
-        delay: 60s
-    
-      
   jimmoen:
     depends_on:
       - shared-db
@@ -98,7 +69,6 @@ services:
       - OIDC__ClientId={{JIMMOEN_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{JIMMOEN_BLOG_CLIENT_SECRET}}
     networks:
-      - jimmoen_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -107,33 +77,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  jimmoen-db:
-    image: mysql
-    volumes:
-      - jimmoen-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=jimmoen
-      - MYSQL_USER=jimmoen
-      - MYSQL_PASSWORD=<jimmoen_password>
-    networks:
-      - jimmoen_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -157,7 +100,6 @@ services:
       - OIDC__ClientId={{REST_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{REST_BLOG_CLIENT_SECRET}}
     networks:
-      - rest_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -170,34 +112,6 @@ services:
         order: stop-first
         delay: 60s
 
-  rest-db:
-    image: mysql
-    volumes:
-      - rest-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=rest
-      - MYSQL_USER=rest
-      - MYSQL_PASSWORD=<rest_password>
-    networks:
-      - rest_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
-      update_config:
-        order: stop-first
-        delay: 60s
-    
-        
   cody:
     depends_on:
       - shared-db
@@ -217,7 +131,6 @@ services:
       - OIDC__ClientId={{CODY_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{CODY_BLOG_CLIENT_SECRET}}
     networks:
-      - cody_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -226,33 +139,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  cody-db:
-    image: mysql
-    volumes:
-      - cody-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=cody
-      - MYSQL_USER=cody
-      - MYSQL_PASSWORD=<cody_password>
-    networks:
-      - cody_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -276,7 +162,6 @@ services:
       - OIDC__ClientId={{GXHAO_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{GXHAO_BLOG_CLIENT_SECRET}}
     networks:
-      - gxhao_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -285,33 +170,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  gxhao-db:
-    image: mysql
-    volumes:
-      - gxhao-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=gxhao
-      - MYSQL_USER=gxhao
-      - MYSQL_PASSWORD=<gxhao_password>
-    networks:
-      - gxhao_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -335,7 +193,6 @@ services:
       - OIDC__ClientId={{ANOIS_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{ANOIS_BLOG_CLIENT_SECRET}}
     networks:
-      - anois_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -344,33 +201,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  anois-db:
-    image: mysql
-    volumes:
-      - anois-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=anois
-      - MYSQL_USER=anois
-      - MYSQL_PASSWORD=<anois_password>
-    networks:
-      - anois_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -394,7 +224,6 @@ services:
       - OIDC__ClientId={{DVORAK_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{DVORAK_BLOG_CLIENT_SECRET}}
     networks:
-      - dvorak_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -403,33 +232,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  dvorak-db:
-    image: mysql
-    volumes:
-      - dvorak-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=dvorak
-      - MYSQL_USER=dvorak
-      - MYSQL_PASSWORD=<dvorak_password>
-    networks:
-      - dvorak_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -453,7 +255,6 @@ services:
       - OIDC__ClientId={{KITLAU_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{KITLAU_BLOG_CLIENT_SECRET}}
     networks:
-      - kitlau_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -462,33 +263,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  kitlau-db:
-    image: mysql
-    volumes:
-      - kitlau-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=kitlau
-      - MYSQL_USER=kitlau
-      - MYSQL_PASSWORD=<kitlau_password>
-    networks:
-      - kitlau_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -512,7 +286,6 @@ services:
       - OIDC__ClientId={{XINBOO_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{XINBOO_BLOG_CLIENT_SECRET}}
     networks:
-      - xinboo_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -521,33 +294,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  xinboo-db:
-    image: mysql
-    volumes:
-      - xinboo-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=xinboo
-      - MYSQL_USER=xinboo
-      - MYSQL_PASSWORD=<xinboo_password>
-    networks:
-      - xinboo_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -571,7 +317,6 @@ services:
       - OIDC__ClientId={{GBINER_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{GBINER_BLOG_CLIENT_SECRET}}
     networks:
-      - gbiner_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -580,33 +325,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  gbiner-db:
-    image: mysql
-    volumes:
-      - gbiner-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=gbiner
-      - MYSQL_USER=gbiner
-      - MYSQL_PASSWORD=<gbiner_password>
-    networks:
-      - gbiner_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -630,7 +348,6 @@ services:
       - OIDC__ClientId={{RDF_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{RDF_BLOG_CLIENT_SECRET}}
     networks:
-      - rdf_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -639,33 +356,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  rdf-db:
-    image: mysql
-    volumes:
-      - rdf-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=rdf
-      - MYSQL_USER=rdf
-      - MYSQL_PASSWORD=<rdf_password>
-    networks:
-      - rdf_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -689,7 +379,6 @@ services:
       - OIDC__ClientId={{LYX_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{LYX_BLOG_CLIENT_SECRET}}
     networks:
-      - lyx_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -698,33 +387,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  lyx-db:
-    image: mysql
-    volumes:
-      - lyx-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=lyx
-      - MYSQL_USER=lyx
-      - MYSQL_PASSWORD=<lyx_password>
-    networks:
-      - lyx_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -748,7 +410,6 @@ services:
       - OIDC__ClientId={{SHUBUZUO_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{SHUBUZUO_BLOG_CLIENT_SECRET}}
     networks:
-      - shubuzuo_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -757,33 +418,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  shubuzuo-db:
-    image: mysql
-    volumes:
-      - shubuzuo-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=shubuzuo
-      - MYSQL_USER=shubuzuo
-      - MYSQL_PASSWORD=<shubuzuo_password>
-    networks:
-      - shubuzuo_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -807,7 +441,6 @@ services:
       - OIDC__ClientId={{LILY_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{LILY_BLOG_CLIENT_SECRET}}
     networks:
-      - lily_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -816,33 +449,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  lily-db:
-    image: mysql
-    volumes:
-      - lily-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=lily
-      - MYSQL_USER=lily
-      - MYSQL_PASSWORD=<lily_password>
-    networks:
-      - lily_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -866,7 +472,6 @@ services:
       - OIDC__ClientId={{CARSON_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{CARSON_BLOG_CLIENT_SECRET}}
     networks:
-      - carson_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -875,33 +480,6 @@ services:
         limits:
           cpus: '4.0'
           memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  carson-db:
-    image: mysql
-    volumes:
-      - carson-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=carson
-      - MYSQL_USER=carson
-      - MYSQL_PASSWORD=<carson_password>
-    networks:
-      - carson_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
       update_config:
         order: stop-first
         delay: 60s
@@ -925,7 +503,6 @@ services:
       - OIDC__ClientId={{ZONEBLOG_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{ZONEBLOG_BLOG_CLIENT_SECRET}}
     networks:
-      - zoneblog_app
       - proxy_app
       - shared_db_net
     stop_grace_period: 60s
@@ -938,34 +515,6 @@ services:
         order: stop-first
         delay: 60s
 
-  zoneblog-db:
-    image: mysql
-    volumes:
-      - zoneblog-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=zoneblog
-      - MYSQL_USER=zoneblog
-      - MYSQL_PASSWORD=<zoneblog_password>
-    networks:
-      - zoneblog_app
-    stop_grace_period: 60s
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --silent"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G
-      update_config:
-        order: stop-first
-        delay: 60s
-    
-      
   yuyuyuyublog:
     depends_on:
       - shared-db
@@ -985,30 +534,8 @@ services:
       - OIDC__ClientId={{YUYUYUYUBLOG_BLOG_CLIENT_ID}}
       - OIDC__ClientSecret={{YUYUYUYUBLOG_BLOG_CLIENT_SECRET}}
     networks:
-      - yuyuyuyublog_app
       - proxy_app
       - shared_db_net
-    stop_grace_period: 60s
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 4G
-      update_config:
-        order: stop-first
-        delay: 60s
-
-  yuyuyuyublog-db:
-    image: mysql
-    volumes:
-      - yuyuyuyublog-db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=yuyuyuyublog
-      - MYSQL_USER=yuyuyuyublog
-      - MYSQL_PASSWORD=<yuyuyuyublog_password>
-    networks:
-      - yuyuyuyublog_app
     stop_grace_period: 60s
     deploy:
       resources:
@@ -1024,41 +551,6 @@ networks:
     external: true
   shared_db_net:
     driver: overlay
-  anduin_app:
-    driver: overlay
-  jimmoen_app:
-    driver: overlay
-  rest_app:
-    driver: overlay
-  cody_app:
-    driver: overlay
-  gxhao_app:
-    driver: overlay
-  anois_app:
-    driver: overlay
-  dvorak_app:
-    driver: overlay
-  kitlau_app:
-    driver: overlay
-  xinboo_app:
-    driver: overlay
-  gbiner_app:
-    driver: overlay
-  rdf_app:
-    driver: overlay
-  lyx_app:
-    driver: overlay
-  shubuzuo_app:
-    driver: overlay
-  lily_app:
-    driver: overlay
-  carson_app:
-    driver: overlay
-  zoneblog_app:
-    driver: overlay
-  yuyuyuyublog_app:
-    driver: overlay  
-
 volumes:
   shared-db-data:
     driver: local
@@ -1072,12 +564,6 @@ volumes:
       type: none
       o: bind
       device: /swarm-vol/moongladepure/anduin/aspnet
-  anduin-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/anduin/db
   anduin-files:
     driver: local
     driver_opts:
@@ -1085,12 +571,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/anduin/files
 
-  jimmoen-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/jimmoen/db
   jimmoen-aspnet:
     driver: local
     driver_opts:
@@ -1104,12 +584,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/jimmoen/files
 
-  rest-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/rest/db
   rest-aspnet:
     driver: local
     driver_opts:
@@ -1123,12 +597,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/rest/files
 
-  cody-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/cody/db
   cody-aspnet:
     driver: local
     driver_opts:
@@ -1142,12 +610,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/cody/files
 
-  gxhao-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/gxhao/db
   gxhao-aspnet:
     driver: local
     driver_opts:
@@ -1161,12 +623,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/gxhao/files
 
-  anois-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/anois/db
   anois-aspnet:
     driver: local
     driver_opts:
@@ -1180,12 +636,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/anois/files
 
-  dvorak-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/dvorak/db
   dvorak-aspnet:
     driver: local
     driver_opts:
@@ -1199,12 +649,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/dvorak/files
 
-  kitlau-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/kitlau/db
   kitlau-aspnet:
     driver: local
     driver_opts:
@@ -1218,12 +662,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/kitlau/files
 
-  xinboo-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/xinboo/db
   xinboo-aspnet:
     driver: local
     driver_opts:
@@ -1237,12 +675,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/xinboo/files
 
-  gbiner-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/gbiner/db
   gbiner-aspnet:
     driver: local
     driver_opts:
@@ -1256,12 +688,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/gbiner/files
 
-  rdf-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/rdf/db
   rdf-aspnet:
     driver: local
     driver_opts:
@@ -1275,12 +701,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/rdf/files
 
-  lyx-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/lyx/db
   lyx-aspnet:
     driver: local
     driver_opts:
@@ -1294,12 +714,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/lyx/files  
 
-  shubuzuo-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/shubuzuo/db
   shubuzuo-aspnet:
     driver: local
     driver_opts:
@@ -1313,12 +727,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/shubuzuo/files
 
-  lily-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/lily/db
   lily-aspnet:
     driver: local
     driver_opts:
@@ -1332,12 +740,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/lily/files
 
-  carson-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/carson/db
   carson-aspnet:
     driver: local
     driver_opts:
@@ -1351,12 +753,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/carson/files
 
-  zoneblog-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/zoneblog/db
   zoneblog-aspnet:
     driver: local
     driver_opts:
@@ -1370,12 +766,6 @@ volumes:
       o: bind
       device: /swarm-vol/moongladepure/zoneblog/files
 
-  yuyuyuyublog-db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/moongladepure/yuyuyuyublog/db
   yuyuyuyublog-aspnet:
     driver: local
     driver_opts:
