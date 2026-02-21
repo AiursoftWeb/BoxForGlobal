@@ -7,7 +7,6 @@ services:
       - proxy_app
     stop_grace_period: 20s
     deploy:
-      replicas: 2
       resources:
         limits:
           cpus: '1.0'
@@ -22,7 +21,6 @@ services:
       - proxy_app
     stop_grace_period: 20s
     deploy:
-      replicas: 2
       resources:
         limits:
           cpus: '1.0'
@@ -37,7 +35,6 @@ services:
       - proxy_app
     stop_grace_period: 20s
     deploy:
-      replicas: 2
       resources:
         limits:
           cpus: '1.0'
@@ -47,7 +44,7 @@ services:
         delay: 5s
 
   comments:
-    image: artalk/artalk-go
+    image: pubhub.aiursoft.com/artalk/artalk-go:latest
     networks:
       - proxy_app
       - internal
@@ -57,7 +54,6 @@ services:
       - db
     stop_grace_period: 20s
     deploy:
-      replicas: 2
       resources:
         limits:
           cpus: '2.0'
