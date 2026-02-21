@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   aimer:
-    image: aiursoft/blog
+    image: pubhub.aiursoft.com/aiursoft/aimer-blog:latest
     networks:
       - proxy_app
     stop_grace_period: 20s
@@ -16,7 +16,7 @@ services:
         delay: 5s
 
   fissssssh:
-    image: aiursoft/fissssssh.gitlab.io
+    image: pubhub.aiursoft.com/aiursoft/fissssssh-blog:latest
     networks:
       - proxy_app
     stop_grace_period: 20s
@@ -30,7 +30,7 @@ services:
         delay: 5s
 
   edgeneko:
-    image: aiursoft/blogv2-src
+    image: pubhub.aiursoft.com/aiursoft/edgeneko-blog:latest
     networks:
       - proxy_app
     stop_grace_period: 20s
