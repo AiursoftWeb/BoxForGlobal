@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   app:
-    image: ghcr.io/anduin2017/how-to-cook
+    image: pubhub.aiursoft.com/ghcr.io/anduin2017/how-to-cook:latest
     networks:
       - proxy_app
     stop_grace_period: 20s

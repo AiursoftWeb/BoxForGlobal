@@ -41,7 +41,7 @@ services:
         delay: 60s
 
   db:
-    image: mysql
+    image: pubhub.aiursoft.com/mysql:latest
     volumes:
       - anduinos-home-db:/var/lib/mysql
     environment:

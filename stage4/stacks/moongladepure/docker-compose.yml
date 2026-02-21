@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   shared-db:
-    image: mysql
+    image: pubhub.aiursoft.com/mysql
     volumes:
       - shared-db-data:/var/lib/mysql
     environment:

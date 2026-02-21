@@ -67,7 +67,7 @@ services:
         delay: 5s
 
   db:
-    image: mysql
+    image: pubhub.aiursoft.com/mysql
     networks: 
       - internal
     volumes:

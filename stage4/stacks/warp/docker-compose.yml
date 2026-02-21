@@ -30,7 +30,7 @@ services:
         delay: 60s
 
   db:
-    image: mysql
+    image: pubhub.aiursoft.com/mysql
     volumes:
       - warp-db:/var/lib/mysql
     environment:

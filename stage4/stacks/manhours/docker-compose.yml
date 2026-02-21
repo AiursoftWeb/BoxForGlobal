@@ -4,7 +4,7 @@ services:
   app:
     depends_on:
       - db
-    image: aiursoft/manhours:latest
+    image: pubhub.aiursoft.com/aiursoft/manhours:latest
     volumes:
       - manhours-aspnet:/data/.aspnet/
       - manhours-files:/data/files
@@ -30,7 +30,7 @@ services:
         delay: 60s
 
   db:
-    image: mysql
+    image: pubhub.aiursoft.com/mysql
     volumes:
       - manhours-db:/var/lib/mysql
     environment:

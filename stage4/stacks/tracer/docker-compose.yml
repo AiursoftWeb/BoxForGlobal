@@ -30,7 +30,7 @@ services:
         delay: 60s
 
   db:
-    image: mysql:latest
+    image: pubhub.aiursoft.com/mysql:latest
     volumes:
       - tracer-db:/var/lib/mysql
     environment:
