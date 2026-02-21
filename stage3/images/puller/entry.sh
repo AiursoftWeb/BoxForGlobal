@@ -283,6 +283,8 @@ images=(
     "aiursoft/uistack"
     "aiursoft/warp"
     "aiursoft/wechatexam"
+    "aiursoft/anduinos-home"
+    "aiursoft/anduinos-docs"
     "24oi/oi-wiki"
     "alpine"
     "andyzhangx/samba:win-fix"
