@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   docs:
-    image: aiursoft/template-docs
+    image: pubhub.aiursoft.com/aiursoft/template-docs:latest
     networks:
       - proxy_app
     stop_grace_period: 20s
@@ -18,7 +18,7 @@ services:
   app:
     depends_on:
       - db
-    image: aiursoft/template
+    image: pubhub.aiursoft.com/aiursoft/template
     volumes:
       - template-aspnet:/data/.aspnet/
       - template-files:/data/files
