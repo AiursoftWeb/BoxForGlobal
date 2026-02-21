@@ -258,6 +258,9 @@ must_login_local_registry
 try_docker_login
 # Define images list
 images=(
+    "aiursoft/edgeneko-blog"
+    "aiursoft/aimer-blog"
+    "aiursoft/fissssssh-blog"
     "aiursoft/aiurdrive"
     "aiursoft/apkg"
     "aiursoft/baget"
