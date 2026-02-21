@@ -3,7 +3,7 @@ version: '3.9'
 
 services:
   authentik_proxy:
-    image: ghcr.io/goauthentik/proxy:2025.12.3
+    image: pubhub.aiursoft.com/ghcr.io/goauthentik/proxy:2025.12.3
     volumes:
       - type: bind
         source: /dev/shm
@@ -27,7 +27,7 @@ services:
         delay: 5s
 
   server:
-    image: louislam/uptime-kuma:1
+    image: pubhub.aiursoft.com/louislam/uptime-kuma:1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - uptime-kuma:/app/data

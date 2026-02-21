@@ -22,7 +22,7 @@ services:
   anduin:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - anduin-files:/data/files
       - anduin-aspnet:/data/.aspnet/
@@ -53,7 +53,7 @@ services:
   jimmoen:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - jimmoen-files:/data/files
       - jimmoen-aspnet:/data/.aspnet/
@@ -84,7 +84,7 @@ services:
   rest:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - rest-files:/data/files
       - rest-aspnet:/data/.aspnet/
@@ -115,7 +115,7 @@ services:
   cody:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - cody-files:/data/files
       - cody-aspnet:/data/.aspnet/
@@ -146,7 +146,7 @@ services:
   gxhao:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - gxhao-files:/data/files
       - gxhao-aspnet:/data/.aspnet/
@@ -177,7 +177,7 @@ services:
   anois:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - anois-files:/data/files
       - anois-aspnet:/data/.aspnet/
@@ -208,7 +208,7 @@ services:
   dvorak:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - dvorak-files:/data/files
       - dvorak-aspnet:/data/.aspnet/
@@ -239,7 +239,7 @@ services:
   kitlau:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - kitlau-files:/data/files
       - kitlau-aspnet:/data/.aspnet/
@@ -270,7 +270,7 @@ services:
   xinboo:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - xinboo-files:/data/files
       - xinboo-aspnet:/data/.aspnet/
@@ -301,7 +301,7 @@ services:
   gbiner:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - gbiner-files:/data/files
       - gbiner-aspnet:/data/.aspnet/
@@ -332,7 +332,7 @@ services:
   rdf:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - rdf-files:/data/files
       - rdf-aspnet:/data/.aspnet/
@@ -363,7 +363,7 @@ services:
   lyx:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - lyx-files:/data/files
       - lyx-aspnet:/data/.aspnet/
@@ -394,7 +394,7 @@ services:
   shubuzuo:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - shubuzuo-files:/data/files
       - shubuzuo-aspnet:/data/.aspnet/
@@ -425,7 +425,7 @@ services:
   lily:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - lily-files:/data/files
       - lily-aspnet:/data/.aspnet/
@@ -456,7 +456,7 @@ services:
   carson:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - carson-files:/data/files
       - carson-aspnet:/data/.aspnet/
@@ -487,7 +487,7 @@ services:
   zoneblog:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - zoneblog-files:/data/files
       - zoneblog-aspnet:/data/.aspnet/
@@ -518,7 +518,7 @@ services:
   yuyuyuyublog:
     depends_on:
       - shared-db
-    image: aiursoft/moongladepure
+    image: pubhub.aiursoft.com/aiursoft/moongladepure
     volumes:
       - yuyuyuyublog-files:/data/files
       - yuyuyuyublog-aspnet:/data/.aspnet/

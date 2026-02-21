@@ -4,7 +4,7 @@ services:
   app:
     depends_on:
       - db
-    image: aiursoft/warp:latest
+    image: pubhub.aiursoft.com/aiursoft/warp:latest
     volumes:
       - warp-aspnet:/data/.aspnet/
       - warp-files:/data/files

@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   docs:
-    image: anduin2019/anduinos-docs
+    image: pubhub.aiursoft.com/aiursoft/anduinos-docs:latest
     networks:
       - proxy_app
     stop_grace_period: 20s
@@ -15,7 +15,7 @@ services:
   app:
     depends_on:
       - db
-    image: anduin2019/anduinos-home
+    image: pubhub.aiursoft.com/aiursoft/anduinos-home:latest
     volumes:
       - anduinos-home-aspnet:/data/.aspnet/
       - anduinos-home-files:/data/files
