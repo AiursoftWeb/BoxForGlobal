@@ -7,6 +7,8 @@ services:
       - proxy_app
     stop_grace_period: 20s
     deploy:
+      labels:
+        shepherd.autoupdate: "true"
       replicas: 2
       update_config:
         delay: 5s
@@ -32,6 +34,8 @@ services:
       - internal
     stop_grace_period: 60s
     deploy:
+      labels:
+        shepherd.autoupdate: "true"
       resources:
         limits:
           cpus: "2.0"
@@ -53,6 +57,8 @@ services:
       - internal
     stop_grace_period: 60s
     deploy:
+      labels:
+        shepherd.autoupdate: "true"
       resources:
         limits:
           cpus: '2.0'

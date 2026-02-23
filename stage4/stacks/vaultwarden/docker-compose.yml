@@ -23,6 +23,8 @@ services:
       - SSO_DEBUG=true  # 添加调试日志
     stop_grace_period: 60s
     deploy:
+      labels:
+        shepherd.autoupdate: "true"
       update_config:
         order: stop-first
         delay: 60s
