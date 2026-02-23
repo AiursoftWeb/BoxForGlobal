@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   vpn:
-    image: aiursoft/gateway
+    image: pubhub.aiursoft.com/aiursoft/gateway
     networks:
       - proxy_app
     volumes:
