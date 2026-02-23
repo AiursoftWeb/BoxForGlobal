@@ -271,6 +271,7 @@ images=(
     "aiursoft/employeecenter"
     "aiursoft/gitmirrorserver"
     "aiursoft/gptgateway"
+    "aiursoft/gateway"
     "aiursoft/kahla"
     "aiursoft/manhours"
     "aiursoft/marktohtml"
