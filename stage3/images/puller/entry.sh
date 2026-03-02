@@ -255,6 +255,7 @@ must_login_local_registry
 try_docker_login
 # Define images list
 images=(
+    "anduin2019/avigame"
     "aiursoft/edgeneko-blog"
     "aiursoft/aimer-blog"
     "aiursoft/fissssssh-blog"
