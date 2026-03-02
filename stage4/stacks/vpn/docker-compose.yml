@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   vpn:
-    image: aiursoft/gateway
+    image: pubhub.aiursoft.com/aiursoft/gateway
     networks:
       - proxy_app
     volumes:
@@ -12,6 +12,8 @@ services:
       - XRAY_UUID={{XRAY_UUID}}
     stop_grace_period: 20s
     deploy:
+      labels:
+        shepherd.autoupdate: "true"
       resources:
         limits:
           cpus: '2.0'

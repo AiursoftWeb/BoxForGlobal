@@ -10,7 +10,7 @@ services:
       - app-aspnet:/data/.aspnet
     environment:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
-      - OpenAI__Model=qwen3:30b-a3b-instruct-2507-q8_0
+      - OpenAI__Model=qwen3.5:27b-q8_0
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
       - ConnectionStrings__DefaultConnection=Server=app-db;Database=app;Uid=app;Pwd=<app_password>;
       - ConnectionStrings__DbType=MySql
@@ -24,6 +24,8 @@ services:
       - proxy_app
     stop_grace_period: 20s
     deploy:
+      labels:
+        shepherd.autoupdate: "true"
       resources:
         limits:
           cpus: '2'
@@ -45,6 +47,8 @@ services:
       - net
     stop_grace_period: 60s
     deploy:
+      labels:
+        shepherd.autoupdate: "true"
       update_config:
         order: stop-first
         delay: 60s

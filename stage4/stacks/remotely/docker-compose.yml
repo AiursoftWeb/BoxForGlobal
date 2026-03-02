@@ -15,6 +15,8 @@ services:
       - Remotely_ConnectionStrings__SQLite=Data Source=/app/AppData/Remotely.db
     stop_grace_period: 60s
     deploy:
+      labels:
+        shepherd.autoupdate: "true"
       resources:
         limits:
           cpus: '4.0'

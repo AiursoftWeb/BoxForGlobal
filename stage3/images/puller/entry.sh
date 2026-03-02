@@ -186,9 +186,9 @@ actual_mirror_docker() {
     # Perform the copy
     log_info "Copying image (attempt ${attempt})..."
     if [[ $attempt -eq 1 ]]; then
-        /usr/local/bin/regctl image copy "$fullSourceImage" "$finalMirror" --digest-tags 2>&1 | sed 's/^/  /'
+        timeout 1800 /usr/local/bin/regctl image copy "$fullSourceImage" "$finalMirror" --digest-tags 2>&1 | sed 's/^/  /'
     else
-        /usr/local/bin/regctl image copy "$fullSourceImage" "$finalMirror" --force-recursive --digest-tags 2>&1 | sed 's/^/  /'
+        timeout 1800 /usr/local/bin/regctl image copy "$fullSourceImage" "$finalMirror" --force-recursive --digest-tags 2>&1 | sed 's/^/  /'
     fi
     sleep 3
 
@@ -248,9 +248,6 @@ mirror_docker() {
             return 1
         fi
     done
-
-    log_info "Sleeping for 60s before next run... This is for cooling down the API calls to Docker Hub."
-    sleep 60
 }
 
 
@@ -258,6 +255,7 @@ must_login_local_registry
 try_docker_login
 # Define images list
 images=(
+    "anduin2019/avigame"
     "aiursoft/edgeneko-blog"
     "aiursoft/aimer-blog"
     "aiursoft/fissssssh-blog"
@@ -271,6 +269,7 @@ images=(
     "aiursoft/employeecenter"
     "aiursoft/gitmirrorserver"
     "aiursoft/gptgateway"
+    "aiursoft/gateway"
     "aiursoft/kahla"
     "aiursoft/manhours"
     "aiursoft/marktohtml"
