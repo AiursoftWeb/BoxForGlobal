@@ -263,6 +263,7 @@ images=(
     "aiursoft/baget"
     "aiursoft/charter"
     "aiursoft/chessserver"
+    "aiursoft/ollamagateway"
     "aiursoft/corp-home"
     "aiursoft/cpprunner"
     "aiursoft/employeecenter"
