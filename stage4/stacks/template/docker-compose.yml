@@ -32,9 +32,9 @@ services:
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/template
       - AppSettings__OIDC__ClientId={{TEMPLATE_CLIENT_ID}}
       - AppSettings__OIDC__ClientSecret={{TEMPLATE_CLIENT_SECRET}}
-      - Clickhouse__Enabled=true
-      - Clickhouse__TableName=TemplateLogs
-      - Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
+      - Logging__Clickhouse__Enabled=true
+      - Logging__Clickhouse__TableName=TemplateLogs
+      - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
     networks:
       - internal
       - proxy_app
