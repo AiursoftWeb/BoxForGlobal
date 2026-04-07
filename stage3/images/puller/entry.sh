@@ -257,6 +257,7 @@ images=(
     "anduin2019/speeches"
     "aiursoft/edgeneko-blog"
     "aiursoft/aimer-blog"
+    "aiursoft/eventsrecorder"
     "aiursoft/fissssssh-blog"
     "aiursoft/polls"
     "aiursoft/corp-home"
