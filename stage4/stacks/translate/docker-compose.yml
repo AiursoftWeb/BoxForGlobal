@@ -19,7 +19,7 @@ services:
       - Logging__Clickhouse__Enabled=true
       - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
       - Logging__Clickhouse__TableName=translate
-      - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
+      - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/v1/chat/completions
       - OpenAI__Model=aiursoft-instruct:latest
       - OpenAI__Token={{TRANSLATE_OLLAMA_GATEWAY_API_KEY}}
     networks:
