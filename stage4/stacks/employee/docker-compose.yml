@@ -16,6 +16,8 @@ services:
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/employeecenter
       - AppSettings__OIDC__ClientId={{EPEC_CLIENT_ID}}
       - AppSettings__OIDC__ClientSecret={{EPEC_CLIENT_SECRET}}
+      - AppSettings__OCR__Enabled=true
+      - AppSettings__OCR__Endpoint=https://ocr.aiursoft.com/api/ocr/pdf
       - AppSettings__OCR__BearerToken={{EPEC_OCR_BEARER_TOKEN}}
       - Logging__Clickhouse__Enabled=true
       - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
