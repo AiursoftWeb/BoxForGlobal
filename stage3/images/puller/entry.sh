@@ -264,6 +264,7 @@ images=(
     "aiursoft/corp-home"
     "aiursoft/employeecenter"
     "aiursoft/gateway"
+    "aiursoft/folderagent"
     "aiursoft/manhours"
     "aiursoft/marktohtml"
     "aiursoft/moongladepure"
