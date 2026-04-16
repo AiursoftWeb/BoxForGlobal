@@ -20,6 +20,7 @@ services:
       - AppSettings__OCR__Enabled=true
       - AppSettings__OCR__Endpoint=https://ocr.aiursoft.com/api/ocr/pdf
       - AppSettings__OCR__BearerToken={{EPEC_OCR_BEARER_TOKEN}}
+      - AppSettings__ExportPath=/export
       - AppSettings__Agent__Endpoint=http://agent:8000/ask
       - Logging__Clickhouse__Enabled=true
       - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
