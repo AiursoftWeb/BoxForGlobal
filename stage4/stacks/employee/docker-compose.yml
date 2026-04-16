@@ -8,6 +8,7 @@ services:
     volumes:
       - employeecenter-aspnet:/data/.aspnet/
       - employeecenter-files:/data/files
+      - employeecenter-context:/export
     environment:
       - ConnectionStrings__DefaultConnection=Server=db;Database=mth;Uid=mth;Pwd=<mth_password>;
       - ConnectionStrings__DbType=MySql
@@ -19,6 +20,7 @@ services:
       - AppSettings__OCR__Enabled=true
       - AppSettings__OCR__Endpoint=https://ocr.aiursoft.com/api/ocr/pdf
       - AppSettings__OCR__BearerToken={{EPEC_OCR_BEARER_TOKEN}}
+      - AppSettings__Agent__Endpoint=http://agent:8000/ask
       - Logging__Clickhouse__Enabled=true
       - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
       - Logging__Clickhouse__TableName=EmployeeCenterLogs
@@ -26,6 +28,27 @@ services:
       - proxy_app
       - internal
       - clickhouse_net
+      - agent
+    stop_grace_period: 20s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  agent:
+    image: hub.aiursoft.com/aiursoft/folderagent:latest
+    volumes:
+      - employeecenter-context:/import:ro
+    environment:
+      - QWEN_API_KEY={{EMPL_AGENT_KEY}}
+    networks:
+      - agent
     stop_grace_period: 20s
     deploy:
       labels:
@@ -74,6 +97,12 @@ volumes:
       type: none
       o: bind
       device: /swarm-vol/employeecenter-data/aspnet
+  employeecenter-context:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/employeecenter-data/context
   employeecenter-db:
     driver: local
     driver_opts:
@@ -87,4 +116,6 @@ networks:
   clickhouse_net:
     external: true
   internal:
+    driver: overlay
+  agent:
     driver: overlay
