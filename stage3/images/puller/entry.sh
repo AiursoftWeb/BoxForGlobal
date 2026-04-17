@@ -255,6 +255,7 @@ try_docker_login
 images=(
     "anduin2019/avigame"
     "anduin2019/speeches"
+    "aiursoft/apkg"
     "aiursoft/translate"
     "aiursoft/edgeneko-blog"
     "aiursoft/aimer-blog"
