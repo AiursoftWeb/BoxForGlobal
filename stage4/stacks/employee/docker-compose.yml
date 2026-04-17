@@ -43,7 +43,7 @@ services:
         delay: 5s
 
   agent:
-    image: hub.aiursoft.com/aiursoft/folderagent:latest
+    image: pubhub.aiursoft.com/aiursoft/folderagent:latest
     volumes:
       - employeecenter-context:/import:ro
       - gemini-config:/root/.gemini
