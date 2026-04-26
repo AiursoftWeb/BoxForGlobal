@@ -18,21 +18,7 @@ services:
       update_config:
         order: stop-first
         delay: 60s
-  speeches:
-    image: pubhub.aiursoft.com/anduin2019/speeches
-    networks:
-      - proxy_app
-    stop_grace_period: 60s
-    deploy:
-      labels:
-        shepherd.autoupdate: "true"
-      resources:
-        limits:
-          cpus: "2.0"
-          memory: 2G
-      update_config:
-        order: stop-first
-        delay: 60s
+
 
 networks:
   proxy_app:

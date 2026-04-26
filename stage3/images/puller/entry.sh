@@ -254,7 +254,6 @@ try_docker_login
 # Define images list
 images=(
     "anduin2019/avigame"
-    "anduin2019/speeches"
     "aiursoft/apkg"
     "aiursoft/translate"
     "aiursoft/edgeneko-blog"
