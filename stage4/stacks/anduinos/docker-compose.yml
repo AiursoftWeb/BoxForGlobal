@@ -49,7 +49,7 @@ services:
         delay: 5s
 
   db:
-    image: pubhub.aiursoft.com/mysql:latest
+    image: pubhub.aiursoft.com/mysql:9.7.0
     volumes:
       - anduinos-home-db:/var/lib/mysql
     environment:

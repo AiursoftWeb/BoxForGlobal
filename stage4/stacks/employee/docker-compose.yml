@@ -65,7 +65,7 @@ services:
         delay: 5s
 
   db:
-    image: pubhub.aiursoft.com/mysql
+    image: pubhub.aiursoft.com/mysql:9.7.0
     volumes:
       - employeecenter-db:/var/lib/mysql
     environment:

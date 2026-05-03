@@ -24,6 +24,7 @@ mirror_image "postgres:16-alpine"
 
 echo "Mirroring MySQL..."
 mirror_image "mysql"
+mirror_image "mysql:9.7.0"
 
 echo "Mirroring Redis..."
 mirror_image "redis:alpine"

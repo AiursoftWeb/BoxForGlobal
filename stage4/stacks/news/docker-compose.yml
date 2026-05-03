@@ -35,7 +35,7 @@ services:
         delay: 5s
 
   app-db:
-    image: pubhub.aiursoft.com/mysql
+    image: pubhub.aiursoft.com/mysql:9.7.0
     volumes:
       - db-data:/var/lib/mysql
     environment:

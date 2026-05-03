@@ -290,6 +290,7 @@ images=(
     "grafana/grafana"
     "immybot/remotely:88"
     "louislam/uptime-kuma:1"
+    "mysql:9.7.0"
     "mysql"
     "neosmemo/memos:stable"
     "postgres:13-alpine"
