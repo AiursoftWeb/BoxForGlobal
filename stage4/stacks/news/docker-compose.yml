@@ -36,6 +36,7 @@ services:
 
   app-db:
     image: pubhub.aiursoft.com/mysql:9.7.0
+    command: --skip-log-bin
     volumes:
       - db-data:/var/lib/mysql
     environment:

@@ -50,6 +50,7 @@ services:
 
   db:
     image: pubhub.aiursoft.com/mysql:9.7.0
+    command: --skip-log-bin
     volumes:
       - anduinos-home-db:/var/lib/mysql
     environment:
