@@ -46,10 +46,11 @@ services:
     image: pubhub.aiursoft.com/aiursoft/folderagent:latest
     volumes:
       - employeecenter-context:/import:ro
-      - gemini-config:/root/.gemini
     environment:
-      - QWEN_API_KEY={{EMPL_AGENT_KEY}}
-      - PROVIDER=gemini
+      - ANTHROPIC_API_KEY={{EMPL_AGENT_KEY}}
+      - ANTHROPIC_BASE_URL=https://ollama.aiursoft.com
+      - CLAUDE_MODEL=aiursoft-super:latest
+      - PROVIDER=claude
     networks:
       - agent
     stop_grace_period: 20s
@@ -113,12 +114,6 @@ volumes:
       type: none
       o: bind
       device: /swarm-vol/employeecenter-data/mysql
-  gemini-config:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/employeecenter-data/gemini-config
 
 networks:
   proxy_app:
