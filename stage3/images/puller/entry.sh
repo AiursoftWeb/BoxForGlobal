@@ -286,6 +286,7 @@ images=(
     "chocobozzz/peertube:production-bookworm"
     "clickhouse/clickhouse-server"
     "containrrr/shepherd"
+    "hacdias/webdav"
     "ghcr.io/anduin2017/how-to-cook:latest"
     "ghcr.io/goauthentik/proxy:2026.2.1"
     "ghcr.io/thomiceli/opengist"
