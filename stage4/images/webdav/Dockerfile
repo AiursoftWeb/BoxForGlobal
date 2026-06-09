@@ -1,7 +1,7 @@
-FROM pubhub.aiursoft.com/bytemark/webdav:latest
+FROM pubhub.aiursoft.com/hacdias/webdav:latest
 
 COPY webdav-config.yaml /config.yaml
 
 EXPOSE 8080
 
-ENTRYPOINT ["/usr/bin/webdav", "--config", "/config.yaml"]
+ENTRYPOINT ["/webdav", "-c", "/config.yaml"]
