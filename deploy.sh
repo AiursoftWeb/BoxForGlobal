@@ -672,6 +672,10 @@ sudo cp ./stage4/stacks/clickhouse/users_override.xml /swarm-vol/click-house/use
 sudo cp ./stage4/stacks/clickhouse/config_override.xml /swarm-vol/click-house/config_override.xml || true
 judge "Copying ClickHouse config override file"
 
+print_ok "Building local webdav..."
+sudo docker build ./stage4/images/webdav -t localhost:8080/box_starting/local_webdav:latest
+sudo docker push localhost:8080/box_starting/local_webdav:latest
+
 print_ok "Deploying business stacks..."
 serviceCount=$(sudo docker service ls --format '{{.Name}}' | wc -l | awk '{print $1}')
 
