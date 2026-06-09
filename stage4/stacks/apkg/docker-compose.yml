@@ -68,10 +68,14 @@ services:
     networks:
       - proxy_app
     deploy:
+      labels:
+        shepherd.autoupdate: "true"
       resources:
         limits:
           cpus: "0.5"
           memory: 256M
+      update_config:
+        order: start-first
 
 volumes:
   apkg-files:

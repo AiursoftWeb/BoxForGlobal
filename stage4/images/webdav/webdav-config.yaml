@@ -1,16 +1,12 @@
 address: 0.0.0.0
 port: 8080
 
-# 全局权限控制
-auth: false          # 关闭全局认证，允许公开访问
+auth: false
 
-# 定义路由和暴露的目录
 users:
-  - username: anonymous  # 匿名用户块
+  - username: anonymous
+    scope: /export
     rules:
-      - regex: ^/.* # 匹配所有路径
-        allow: true      # 允许访问
-        modify: false    # 绝对禁止修改（即使 volume 没有 ro，应用层也锁死）
-
-# 配置服务目录
-scope: /export
+      - regex: ^/.*
+        allow: true
+        modify: false
