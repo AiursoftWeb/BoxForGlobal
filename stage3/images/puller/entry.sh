@@ -278,7 +278,7 @@ images=(
     "aiursoft/template-docs"
     "aiursoft/tracer"
     "aiursoft/warp"
-    "aiursoft/anduinos-home"
+    "aiursoft/anduinoshome"
     "aiursoft/anduinos-docs"
     "artalk/artalk-go"
     "caddy"
