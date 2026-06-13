@@ -1,7 +1,0 @@
-address: 0.0.0.0
-port: 8080
-
-directory: /export
-permissions: R
-
-behindProxy: true
