@@ -61,22 +61,6 @@ services:
         order: stop-first
         delay: 60s
 
-  webdav:
-    image: localhost:8080/box_starting/local_webdav:latest
-    volumes:
-      - apkg-export:/export:ro
-    networks:
-      - proxy_app
-    deploy:
-      labels:
-        shepherd.autoupdate: "true"
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
-      update_config:
-        order: start-first
-
 volumes:
   apkg-files:
     driver: local
