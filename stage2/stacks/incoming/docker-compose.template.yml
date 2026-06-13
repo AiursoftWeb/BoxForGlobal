@@ -65,7 +65,6 @@ volumes:
       type: none
       o: bind
       device: /swarm-vol/sites-data
-
 networks:
   proxy_app:
     external: true
