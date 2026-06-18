@@ -288,7 +288,7 @@ images=(
     "containrrr/shepherd"
     "hacdias/webdav"
     "ghcr.io/anduin2017/how-to-cook:latest"
-    "ghcr.io/goauthentik/proxy:2026.2.1"
+    "ghcr.io/goauthentik/proxy:2026.5.3"
     "ghcr.io/thomiceli/opengist"
     "gitea/gitea"
     "grafana/grafana"
