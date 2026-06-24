@@ -264,7 +264,7 @@ images=(
     "aiursoft/eventsrecorder"
     "aiursoft/fissssssh-blog"
     "aiursoft/polls"
-    "aiursoft/corp-home"
+    "aiursoft/corphome"
     "aiursoft/employeecenter"
     "aiursoft/gateway"
     "aiursoft/folderagent"
