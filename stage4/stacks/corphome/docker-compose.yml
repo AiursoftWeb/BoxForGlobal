@@ -39,7 +39,7 @@ services:
     image: pubhub.aiursoft.com/mysql:9.7.0
     command: --skip-log-bin
     volumes:
-      - apkg-db:/var/lib/mysql
+      - corphome-db:/var/lib/mysql
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_DATABASE=corphome
