@@ -62,7 +62,7 @@ services:
         delay: 60s
 
   cron:
-    image: pubhub.aiursoft.com/ubuntu:25.10
+    image: pubhub.aiursoft.com/ubuntu:26.04
     depends_on:
       - db
     command:

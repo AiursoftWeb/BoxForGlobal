@@ -299,6 +299,7 @@ images=(
     "neosmemo/memos:stable"
     "postgres:13-alpine"
     "redis:6-alpine"
+    "ubuntu:26.04"
     "ubuntu:25.10"
     "vaultwarden/server:testing"
     "vikunja/vikunja"
