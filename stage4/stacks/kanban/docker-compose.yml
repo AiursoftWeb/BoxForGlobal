@@ -43,8 +43,6 @@ services:
 
   markitdown:
     image: pubhub.aiursoft.com/aiursoft/markitdown:latest
-    environment:
-      - MARKDOWN_ACCESS_TOKEN={{KANBAN_MARKDOWN_TOKEN}}
     networks:
       - markitdown
     stop_grace_period: 20s
