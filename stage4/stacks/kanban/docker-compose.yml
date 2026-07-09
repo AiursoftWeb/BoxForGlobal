@@ -18,7 +18,6 @@ services:
       - AppSettings__OIDC__ClientSecret={{KANBAN_CLIENT_SECRET}}
       - AppSettings__Anthropic__Token={{KANBAN_ANTHROPIC_API_KEY}}
       - AppSettings__MarkItDown__Endpoint=http://markitdown:8000/api/convert
-      - AppSettings__MarkItDown__AccessToken={{KANBAN_MARKDOWN_TOKEN}}
       - AppSettings__Anthropic__CompletionApiUrl=https://ollama.aiursoft.com/v1/messages/
       - AppSettings__Anthropic__Model=aiursoft-instruct:latest
       - Logging__Clickhouse__Enabled=true
