@@ -268,6 +268,7 @@ images=(
     "aiursoft/employeecenter"
     "aiursoft/gateway"
     "aiursoft/folderagent"
+    "aiursoft/markitdown"
     "aiursoft/manhours"
     "aiursoft/marktohtml"
     "aiursoft/moongladepure"
