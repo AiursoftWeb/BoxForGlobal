@@ -1,19 +1,6 @@
 version: '3.9'
 
 services:
-  docs:
-    image: pubhub.aiursoft.com/aiursoft/anduinos-docs:latest
-    networks:
-      - proxy_app
-    stop_grace_period: 20s
-    deploy:
-      labels:
-        shepherd.autoupdate: "true"
-      replicas: 2
-      update_config:
-        delay: 5s
-        order: start-first
-
   app:
     depends_on:
       - db
