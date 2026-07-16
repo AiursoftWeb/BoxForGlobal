@@ -13,7 +13,7 @@ services:
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
-      - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/anduinosdocs
+      - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/anduin-os-docs
       - AppSettings__OIDC__ClientId={{ANDUINOSDOCS_CLIENT_ID}}
       - AppSettings__OIDC__ClientSecret={{ANDUINOSDOCS_CLIENT_SECRET}}
       - Logging__Clickhouse__Enabled=true
