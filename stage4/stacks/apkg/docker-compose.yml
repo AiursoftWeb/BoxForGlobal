@@ -6,14 +6,12 @@ services:
       - db
     image: pubhub.aiursoft.com/aiursoft/apkg:latest
     volumes:
-      - apkg-aspnet:/data/.aspnet/
-      - apkg-files:/data/files
-      - apkg-export:/export
+      - apkg-data:/data
     environment:
       - ConnectionStrings__DefaultConnection=Server=db;Database=apkg;Uid=apkg;Pwd=<apkg_password>;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
-      - Storage__ExportPath=/export
+      - Storage__ExportPath=/data/export
       - AppSettings__AuthProvider=OIDC
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/apkg
       - AppSettings__OIDC__ClientId={{APKG_CLIENT_ID}}
@@ -62,24 +60,12 @@ services:
         delay: 60s
 
 volumes:
-  apkg-files:
+  apkg-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /swarm-vol/apkg-data/files
-  apkg-export:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/apkg-data/export
-  apkg-aspnet:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /swarm-vol/apkg-data/aspnet
+      device: /swarm-vol/apkg-data
   apkg-db:
     driver: local
     driver_opts:
