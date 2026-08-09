@@ -302,7 +302,7 @@ images=(
     "redis:6-alpine"
     "ubuntu:26.04"
     "ubuntu:25.10"
-    "vaultwarden/server:testing"
+    "vaultwarden/server:latest"
     "vikunja/vikunja"
 )
 
