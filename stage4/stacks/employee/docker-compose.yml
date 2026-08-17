@@ -26,7 +26,10 @@ services:
       - AppSettings__ASR__Model=whisperx
       - AppSettings__ASR__Level=large-v3
       - AppSettings__ASR__Language=
-      - AppSettings__ASR__TimeoutSeconds=1800
+      - AppSettings__ASR__SegmentDurationSeconds=1800
+      - AppSettings__ASR__SegmentOverlapSeconds=2
+      - AppSettings__ASR__PreferOriginalSegmentCodec=true
+      - AppSettings__ASR__TimeoutSeconds=7200
       - AppSettings__ASR__AsrMaxRetryCount=30
       - AppSettings__ASR__AsrMaxEmptyRetryCount=10
       - AppSettings__ExportPath=/export
