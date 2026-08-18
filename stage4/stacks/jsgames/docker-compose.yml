@@ -2,8 +2,6 @@ version: "3.9"
 
 services:
   avigame:
-    depends_on:
-      - db
     image: pubhub.aiursoft.com/anduin2019/avigame
     networks:
       - proxy_app
