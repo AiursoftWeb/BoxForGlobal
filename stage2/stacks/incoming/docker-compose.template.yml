@@ -28,7 +28,7 @@ services:
       - ALLOW_INCOMING_IPS=127.0.0.1
     volumes:
       - sites-data:/data
-      - /swarm-vol/apkg-data/export:/data/apkg-export:ro
+      - /swarm-vol/apkg-data/data/export:/data/apkg-export:ro
     stop_grace_period: 60s
     deploy:
       resources:
