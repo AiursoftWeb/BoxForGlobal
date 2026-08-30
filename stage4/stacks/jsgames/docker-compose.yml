@@ -1,6 +1,38 @@
 version: "3.9"
 
 services:
+  ipcalc:
+    image: pubhub.aiursoft.com/anduin/ipcalc:latest
+    networks:
+      - proxy_app
+    stop_grace_period: 60s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+  aoe:
+    image: pubhub.aiursoft.com/anduin/aoemini:latest
+    networks:
+      - proxy_app
+    stop_grace_period: 60s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+      update_config:
+        order: stop-first
+        delay: 60s
+
   avigame:
     image: pubhub.aiursoft.com/anduin2019/avigame
     networks:
@@ -16,7 +48,6 @@ services:
       update_config:
         order: stop-first
         delay: 60s
-
 
 networks:
   proxy_app:
