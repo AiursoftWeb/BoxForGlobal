@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   ipcalc:
-    image: pubhub.aiursoft.com/anduin/ipcalc:latest
+    image: pubhub.aiursoft.com/anduin2019/ipcalc:latest
     networks:
       - proxy_app
     stop_grace_period: 60s
@@ -18,7 +18,7 @@ services:
         delay: 60s
 
   aoe:
-    image: pubhub.aiursoft.com/anduin/aoemini:latest
+    image: pubhub.aiursoft.com/anduin2019/aoemini:latest
     networks:
       - proxy_app
     stop_grace_period: 60s
