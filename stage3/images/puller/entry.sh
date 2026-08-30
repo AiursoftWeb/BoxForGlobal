@@ -253,9 +253,9 @@ must_login_local_registry
 try_docker_login
 # Define images list
 images=(
-    "anduin2019/avigame"
-    "anduin2019/aoemini"
     "anduin2019/ipcalc"
+    "anduin2019/aoemini"
+    "anduin2019/avigame"
     "aiursoft/apkg"
     "aiursoft/howtocookviewer"
     "aiursoft/kanban"
