@@ -14,8 +14,12 @@ services:
       - Storage__Path=/data/files
       - AppSettings__AuthProvider=OIDC
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/kanban
+      - AppSettings__OIDC__MobileAuthority=https://auth.aiursoft.com/application/o/kanban-android
       - AppSettings__OIDC__ClientId={{KANBAN_CLIENT_ID}}
       - AppSettings__OIDC__ClientSecret={{KANBAN_CLIENT_SECRET}}
+      - AppSettings__OIDC__MobileClientId=kanban-android
+      - AppSettings__OIDC__ApiAudience=kanban-android
+      - AppSettings__OIDC__ApiScope=
       - AppSettings__MarkItDown__Endpoint=http://markitdown:8000/api/convert
       - AppSettings__Anthropic__CompletionApiUrl=https://ollama.aiursoft.com/v1/messages/
       - AppSettings__Anthropic__Model=aiursoft-instruct:latest
