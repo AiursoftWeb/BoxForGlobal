@@ -1,29 +1,58 @@
 version: "3.9"
 
+x-v2-blog: &v2-blog
+  image: pubhub.aiursoft.com/aiursoft/moongladev2:latest
+  stop_grace_period: 20s
+  networks:
+    - proxy_app
+    - shared-db-internal
+    - clickhouse_net
+  deploy:
+    replicas: 0
+    labels:
+      shepherd.autoupdate: "true"
+    resources:
+      limits:
+        cpus: "2.0"
+        memory: 2G
+    update_config:
+      order: start-first
+      delay: 5s
+
+x-v2-environment: &v2-environment
+  ConnectionStrings__DbType: MySql
+  Storage__Path: /data/files
+  AppSettings__AuthProvider: OIDC
+  AppSettings__DefaultRole: Administrators
+  GlobalSettings__OpenAiChatEndpoint: https://ollama.aiursoft.com/v1/chat/completions
+  GlobalSettings__OpenAiModel: aiursoft-instruct:latest
+  GlobalSettings__OpenAiApiToken: "{{NEW_BLOGS_OLLAMA_TOKEN}}"
+  GlobalSettings__EnableEmbeddingBasedSearch: "true"
+  Logging__Clickhouse__Enabled: "true"
+  Logging__Clickhouse__ConnectionString: Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
+
 services:
   dvorak:
-    depends_on:
-      - dvorak-db
     image: pubhub.aiursoft.com/aiursoft/moongladev2:latest
     volumes:
       - dvorak-aspnet:/data/.aspnet/
       - dvorak-files:/data/files
     environment:
-      - ConnectionStrings__DefaultConnection=Server=dvorak-db;Database=moongladev2;Uid=moongladev2;Pwd=<dvorak_password>;
-      - ConnectionStrings__DbType=MySql
-      - Storage__Path=/data/files
-      - AppSettings__AuthProvider=OIDC
-      - AppSettings__DefaultRole=Administrators
-      - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/dvorakblog/
-      - AppSettings__OIDC__ClientId={{DVORAK_BLOG_CLIENT_ID}}
-      - AppSettings__OIDC__ClientSecret={{DVORAK_BLOG_CLIENT_SECRET}}
-      - GlobalSettings__OpenAiChatEndpoint=https://ollama.aiursoft.com/v1/chat/completions
-      - GlobalSettings__OpenAiModel=aiursoft-instruct:latest
-      - GlobalSettings__OpenAiApiToken={{NEW_BLOGS_OLLAMA_TOKEN}}
-      - GlobalSettings__EnableEmbeddingBasedSearch=true
-      - Logging__Clickhouse__Enabled=true
-      - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
-      - Logging__Clickhouse__TableName=DvorakBlogLogs
+      ConnectionStrings__DefaultConnection: Server=dvorak-db;Database=moongladev2;Uid=moongladev2;Pwd=<dvorak_password>;
+      ConnectionStrings__DbType: MySql
+      Storage__Path: /data/files
+      AppSettings__AuthProvider: OIDC
+      AppSettings__DefaultRole: Administrators
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/dvorakblog/
+      AppSettings__OIDC__ClientId: "{{DVORAK_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{DVORAK_BLOG_CLIENT_SECRET}}"
+      GlobalSettings__OpenAiChatEndpoint: https://ollama.aiursoft.com/v1/chat/completions
+      GlobalSettings__OpenAiModel: aiursoft-instruct:latest
+      GlobalSettings__OpenAiApiToken: "{{NEW_BLOGS_OLLAMA_TOKEN}}"
+      GlobalSettings__EnableEmbeddingBasedSearch: "true"
+      Logging__Clickhouse__Enabled: "true"
+      Logging__Clickhouse__ConnectionString: Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
+      Logging__Clickhouse__TableName: DvorakBlogLogs
     networks:
       - proxy_app
       - dvorak-internal
@@ -46,10 +75,10 @@ services:
     volumes:
       - dvorak-db:/var/lib/mysql
     environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_DATABASE=moongladev2
-      - MYSQL_USER=moongladev2
-      - MYSQL_PASSWORD=<dvorak_password>
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
+      MYSQL_DATABASE: moongladev2
+      MYSQL_USER: moongladev2
+      MYSQL_PASSWORD: <dvorak_password>
     networks:
       - dvorak-internal
     stop_grace_period: 60s
@@ -63,6 +92,235 @@ services:
       update_config:
         order: stop-first
         delay: 60s
+
+  shared-db:
+    image: pubhub.aiursoft.com/mysql:9.7.0
+    command: --skip-log-bin
+    volumes:
+      - shared-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: newblogs_password_change_me
+    networks:
+      - shared-db-internal
+    stop_grace_period: 60s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 8G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+  anduin:
+    <<: *v2-blog
+    volumes:
+      - anduin-aspnet:/data/.aspnet/
+      - anduin-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=anduin;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/anduinblog/
+      AppSettings__OIDC__ClientId: "{{ANDUIN_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{ANDUIN_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: AnduinBlogLogs
+
+  jimmoen:
+    <<: *v2-blog
+    volumes:
+      - jimmoen-aspnet:/data/.aspnet/
+      - jimmoen-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=jimmoen;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/jimmoenblog/
+      AppSettings__OIDC__ClientId: "{{JIMMOEN_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{JIMMOEN_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: JimMoenBlogLogs
+
+  rest:
+    <<: *v2-blog
+    volumes:
+      - rest-aspnet:/data/.aspnet/
+      - rest-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=rest;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/restblog/
+      AppSettings__OIDC__ClientId: "{{REST_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{REST_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: RestBlogLogs
+
+  cody:
+    <<: *v2-blog
+    volumes:
+      - cody-aspnet:/data/.aspnet/
+      - cody-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=cody;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/codyblog/
+      AppSettings__OIDC__ClientId: "{{CODY_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{CODY_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: CodyBlogLogs
+
+  gxhao:
+    <<: *v2-blog
+    volumes:
+      - gxhao-aspnet:/data/.aspnet/
+      - gxhao-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=gxhao;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/gxhaoblog/
+      AppSettings__OIDC__ClientId: "{{GXHAO_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{GXHAO_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: GxhaoBlogLogs
+
+  anois:
+    <<: *v2-blog
+    volumes:
+      - anois-aspnet:/data/.aspnet/
+      - anois-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=anois;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/anoisblog/
+      AppSettings__OIDC__ClientId: "{{ANOIS_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{ANOIS_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: AnoisBlogLogs
+
+  kitlau:
+    <<: *v2-blog
+    volumes:
+      - kitlau-aspnet:/data/.aspnet/
+      - kitlau-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=kitlau;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/kitlaublog/
+      AppSettings__OIDC__ClientId: "{{KITLAU_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{KITLAU_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: KitLauBlogLogs
+
+  xinboo:
+    <<: *v2-blog
+    volumes:
+      - xinboo-aspnet:/data/.aspnet/
+      - xinboo-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=xinboo;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/xinbooblog/
+      AppSettings__OIDC__ClientId: "{{XINBOO_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{XINBOO_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: XinbooBlogLogs
+
+  gbiner:
+    <<: *v2-blog
+    volumes:
+      - gbiner-aspnet:/data/.aspnet/
+      - gbiner-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=gbiner;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/gbinerblog/
+      AppSettings__OIDC__ClientId: "{{GBINER_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{GBINER_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: GbinerBlogLogs
+
+  rdf:
+    <<: *v2-blog
+    volumes:
+      - rdf-aspnet:/data/.aspnet/
+      - rdf-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=rdf;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/rdfblog/
+      AppSettings__OIDC__ClientId: "{{RDF_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{RDF_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: RdfBlogLogs
+
+  lyx:
+    <<: *v2-blog
+    volumes:
+      - lyx-aspnet:/data/.aspnet/
+      - lyx-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=lyx;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/lyxblog/
+      AppSettings__OIDC__ClientId: "{{LYX_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{LYX_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: LyxBlogLogs
+
+  shubuzuo:
+    <<: *v2-blog
+    volumes:
+      - shubuzuo-aspnet:/data/.aspnet/
+      - shubuzuo-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=shubuzuo;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/shubuzuoblog/
+      AppSettings__OIDC__ClientId: "{{SHUBUZUO_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{SHUBUZUO_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: ShubuzuoBlogLogs
+
+  lily:
+    <<: *v2-blog
+    volumes:
+      - lily-aspnet:/data/.aspnet/
+      - lily-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=lily;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/lilyblog/
+      AppSettings__OIDC__ClientId: "{{LILY_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{LILY_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: LilyBlogLogs
+
+  carson:
+    <<: *v2-blog
+    volumes:
+      - carson-aspnet:/data/.aspnet/
+      - carson-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=carson;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/carsonblog/
+      AppSettings__OIDC__ClientId: "{{CARSON_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{CARSON_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: CarsonBlogLogs
+
+  zoneblog:
+    <<: *v2-blog
+    volumes:
+      - zoneblog-aspnet:/data/.aspnet/
+      - zoneblog-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=zoneblog;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/zoneblog/
+      AppSettings__OIDC__ClientId: "{{ZONEBLOG_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{ZONEBLOG_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: ZoneBlogLogs
+
+  yuyuyuyublog:
+    <<: *v2-blog
+    volumes:
+      - yuyuyuyublog-aspnet:/data/.aspnet/
+      - yuyuyuyublog-files:/data/files
+    environment:
+      <<: *v2-environment
+      ConnectionStrings__DefaultConnection: Server=shared-db;Database=yuyuyuyublog;Uid=root;Pwd=newblogs_password_change_me;
+      AppSettings__OIDC__Authority: https://auth.aiursoft.com/application/o/yuyuyuyublog/
+      AppSettings__OIDC__ClientId: "{{YUYUYUYUBLOG_BLOG_CLIENT_ID}}"
+      AppSettings__OIDC__ClientSecret: "{{YUYUYUYUBLOG_BLOG_CLIENT_SECRET}}"
+      Logging__Clickhouse__TableName: YuyuyuyuBlogLogs
 
 volumes:
   dvorak-files:
@@ -83,6 +341,204 @@ volumes:
       type: none
       o: bind
       device: /swarm-vol/newblogs/dvorak/mysql
+  shared-db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/shared-mysql
+  anduin-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/anduin/files
+  anduin-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/anduin/aspnet
+  jimmoen-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/jimmoen/files
+  jimmoen-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/jimmoen/aspnet
+  rest-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/rest/files
+  rest-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/rest/aspnet
+  cody-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/cody/files
+  cody-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/cody/aspnet
+  gxhao-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/gxhao/files
+  gxhao-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/gxhao/aspnet
+  anois-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/anois/files
+  anois-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/anois/aspnet
+  kitlau-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/kitlau/files
+  kitlau-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/kitlau/aspnet
+  xinboo-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/xinboo/files
+  xinboo-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/xinboo/aspnet
+  gbiner-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/gbiner/files
+  gbiner-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/gbiner/aspnet
+  rdf-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/rdf/files
+  rdf-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/rdf/aspnet
+  lyx-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/lyx/files
+  lyx-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/lyx/aspnet
+  shubuzuo-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/shubuzuo/files
+  shubuzuo-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/shubuzuo/aspnet
+  lily-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/lily/files
+  lily-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/lily/aspnet
+  carson-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/carson/files
+  carson-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/carson/aspnet
+  zoneblog-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/zoneblog/files
+  zoneblog-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/zoneblog/aspnet
+  yuyuyuyublog-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/yuyuyuyublog/files
+  yuyuyuyublog-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/yuyuyuyublog/aspnet
 
 networks:
   proxy_app:
@@ -90,4 +546,6 @@ networks:
   clickhouse_net:
     external: true
   dvorak-internal:
+    driver: overlay
+  shared-db-internal:
     driver: overlay
