@@ -1,0 +1,92 @@
+version: "3.9"
+
+services:
+  dvorak:
+    depends_on:
+      - dvorak-db
+    image: pubhub.aiursoft.com/aiursoft/moongladev2:latest
+    volumes:
+      - dvorak-aspnet:/data/.aspnet/
+      - dvorak-files:/data/files
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=dvorak-db;Database=moongladev2;Uid=moongladev2;Pwd=<dvorak_password>;
+      - ConnectionStrings__DbType=MySql
+      - Storage__Path=/data/files
+      - AppSettings__AuthProvider=OIDC
+      - AppSettings__DefaultRole=Administrators
+      - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/dvorakblog/
+      - AppSettings__OIDC__ClientId={{DVORAK_BLOG_CLIENT_ID}}
+      - AppSettings__OIDC__ClientSecret={{DVORAK_BLOG_CLIENT_SECRET}}
+      - GlobalSettings__OpenAiChatEndpoint=https://ollama.aiursoft.com/v1/chat/completions
+      - GlobalSettings__OpenAiModel=aiursoft-instruct:latest
+      - GlobalSettings__OpenAiApiToken={{NEW_BLOGS_OLLAMA_TOKEN}}
+      - Logging__Clickhouse__Enabled=true
+      - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
+      - Logging__Clickhouse__TableName=DvorakBlogLogs
+    networks:
+      - proxy_app
+      - dvorak-internal
+      - clickhouse_net
+    stop_grace_period: 20s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  dvorak-db:
+    image: pubhub.aiursoft.com/mysql:9.7.0
+    command: --skip-log-bin
+    volumes:
+      - dvorak-db:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=moongladev2
+      - MYSQL_USER=moongladev2
+      - MYSQL_PASSWORD=<dvorak_password>
+    networks:
+      - dvorak-internal
+    stop_grace_period: 60s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 4G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+volumes:
+  dvorak-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/dvorak/files
+  dvorak-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/dvorak/aspnet
+  dvorak-db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/newblogs/dvorak/mysql
+
+networks:
+  proxy_app:
+    external: true
+  clickhouse_net:
+    external: true
+  dvorak-internal:
+    driver: overlay
