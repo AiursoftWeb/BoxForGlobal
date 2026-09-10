@@ -20,6 +20,7 @@ services:
       - GlobalSettings__OpenAiChatEndpoint=https://ollama.aiursoft.com/v1/chat/completions
       - GlobalSettings__OpenAiModel=aiursoft-instruct:latest
       - GlobalSettings__OpenAiApiToken={{NEW_BLOGS_OLLAMA_TOKEN}}
+      - GlobalSettings__EnableEmbeddingBasedSearch=true
       - Logging__Clickhouse__Enabled=true
       - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
       - Logging__Clickhouse__TableName=DvorakBlogLogs
