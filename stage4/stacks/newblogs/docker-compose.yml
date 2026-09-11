@@ -25,7 +25,7 @@ x-v2-environment: &v2-environment
   AppSettings__AuthProvider: OIDC
   AppSettings__DefaultRole: Administrators
   GlobalSettings__OpenAiChatEndpoint: https://ollama.aiursoft.com/v1/chat/completions
-  GlobalSettings__OpenAiModel: aiursoft-instruct:latest
+  GlobalSettings__OpenAiModel: aiursoft-localization:latest
   GlobalSettings__OpenAiApiToken: "{{NEW_BLOGS_OLLAMA_TOKEN}}"
   GlobalSettings__EnableEmbeddingBasedSearch: "true"
   Logging__Clickhouse__Enabled: "true"
@@ -47,7 +47,7 @@ services:
       AppSettings__OIDC__ClientId: "{{DVORAK_BLOG_CLIENT_ID}}"
       AppSettings__OIDC__ClientSecret: "{{DVORAK_BLOG_CLIENT_SECRET}}"
       GlobalSettings__OpenAiChatEndpoint: https://ollama.aiursoft.com/v1/chat/completions
-      GlobalSettings__OpenAiModel: aiursoft-instruct:latest
+      GlobalSettings__OpenAiModel: aiursoft-localization:latest
       GlobalSettings__OpenAiApiToken: "{{NEW_BLOGS_OLLAMA_TOKEN}}"
       GlobalSettings__EnableEmbeddingBasedSearch: "true"
       Logging__Clickhouse__Enabled: "true"
