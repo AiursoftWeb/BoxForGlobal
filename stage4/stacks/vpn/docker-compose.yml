@@ -4,10 +4,13 @@ services:
   vpn:
     image: pubhub.aiursoft.com/aiursoft/gateway
     networks:
-      - proxy_app
+      # Only Caddy shares this network; business backends stay on proxy_app.
+      - vpn_ingress
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     volumes:
       - vpn-data:/var/log/xray
-      - /etc/hosts:/etc/hosts
     environment:
       - XRAY_UUID={{XRAY_UUID}}
     stop_grace_period: 20s
@@ -23,7 +26,7 @@ services:
         delay: 5s
 
 networks:
-  proxy_app:
+  vpn_ingress:
     external: true
 
 volumes:

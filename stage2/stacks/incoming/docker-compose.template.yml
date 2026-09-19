@@ -14,6 +14,8 @@ services:
         protocol: tcp
         mode: host
     networks:
+      # Keep business-domain aliases off the VPN network.
+      vpn_ingress: {}
       proxy_app:
         aliases:
           # Network aliases for internal DNS resolution
@@ -66,6 +68,8 @@ volumes:
       o: bind
       device: /swarm-vol/sites-data
 networks:
+  vpn_ingress:
+    external: true
   proxy_app:
     external: true
   clickhouse_net:
