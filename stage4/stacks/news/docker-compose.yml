@@ -12,6 +12,7 @@ services:
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/api/chat
       - OpenAI__Model=aiursoft-instruct:latest
       - OpenAI__Token={{OLLAMA_GATEWAY_API_KEY}}
+      - OpenAI__AutoGenerateComment=false
       - ConnectionStrings__DefaultConnection=Server=app-db;Database=app;Uid=app;Pwd=<app_password>;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
