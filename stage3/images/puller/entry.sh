@@ -225,6 +225,7 @@ images=(
     "anduin2019/ipcalc"
     "anduin2019/aoemini"
     "anduin2019/avigame"
+    "aiursoft/alertcenter"
     "aiursoft/apkg"
     "aiursoft/howtocookviewer"
     "aiursoft/kanban"
