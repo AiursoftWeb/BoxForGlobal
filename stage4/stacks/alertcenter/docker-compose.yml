@@ -13,6 +13,12 @@ services:
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - Webhook__HeaderProtectionKey={{ALERTCENTER_WEBHOOK_HEADER_PROTECTION_KEY}}
+      - Email__Host=mail.aiursoft.com
+      - Email__Port=587
+      - Email__UserName=service@aiursoft.com
+      - Email__Password={{ALERTCENTER_SMTP_PASSWORD}}
+      - Email__From=service@aiursoft.com
+      - Email__RequireTls=true
       - AppSettings__DefaultRole=Employees
       - AppSettings__AuthProvider=OIDC
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/alertcenter
