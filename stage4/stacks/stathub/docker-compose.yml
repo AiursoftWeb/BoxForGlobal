@@ -12,7 +12,7 @@ services:
       - ConnectionStrings__DefaultConnection=Server=db;Database=stathub;Uid=stathub;Pwd=<stathub_password>;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
-      - GlobalSettings__AlertCenter_Enabled={{STATHUB_ALERTCENTER_ENABLED}}
+      - GlobalSettings__AlertCenter_Enabled=true
       - GlobalSettings__AlertCenter_Endpoint=https://alertcenter.aiursoft.com
       - GlobalSettings__AlertCenter_ApiKey={{STATHUB_ALERTCENTER_API_KEY}}
       - GlobalSettings__AlertCenter_PublicBaseUrl=https://stathub.aiursoft.com
