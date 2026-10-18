@@ -13,10 +13,10 @@ services:
       - ConnectionStrings__DefaultConnection=Server=db;Database=mth;Uid=mth;Pwd=<mth_password>;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
-      - AlertCenter__Enabled={{EPEC_ALERTCENTER_ENABLED}}
-      - AlertCenter__Endpoint=https://alertcenter.aiursoft.com
-      - AlertCenter__ApiKey={{EPEC_ALERTCENTER_API_KEY}}
-      - AlertCenter__PublicBaseUrl=https://employee.aiursoft.com
+      - GlobalSettings__AlertCenter_Enabled={{EPEC_ALERTCENTER_ENABLED}}
+      - GlobalSettings__AlertCenter_Endpoint=https://alertcenter.aiursoft.com
+      - GlobalSettings__AlertCenter_ApiKey={{EPEC_ALERTCENTER_API_KEY}}
+      - GlobalSettings__AlertCenter_PublicBaseUrl=https://employee.aiursoft.com
       - AppSettings__AuthProvider=OIDC
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/employeecenter
       - AppSettings__OIDC__ClientId={{EPEC_CLIENT_ID}}
