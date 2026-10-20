@@ -1,22 +1,6 @@
 version: '3.9'
 
 services:
-  docs:
-    image: pubhub.aiursoft.com/aiursoft/template-docs:latest
-    networks:
-      - proxy_app
-    stop_grace_period: 20s
-    deploy:
-      labels:
-        shepherd.autoupdate: "true"
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: 2G
-      update_config:
-        order: start-first
-        delay: 5s
-
   app:
     depends_on:
       - db

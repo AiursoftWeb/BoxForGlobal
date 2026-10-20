@@ -249,7 +249,6 @@ images=(
     "aiursoft/stathub"
     "aiursoft/static"
     "aiursoft/template"
-    "aiursoft/template-docs"
     "aiursoft/tracer"
     "aiursoft/warp"
     "aiursoft/anduinoshome"
