@@ -1,0 +1,97 @@
+version: "3.9"
+
+services:
+  app:
+    depends_on:
+      - db
+    image: pubhub.aiursoft.com/aiursoft/docsviewer:latest
+    volumes:
+      - templatedocs-aspnet:/data/.aspnet/
+      - templatedocs-files:/data/files
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=templatedocs;Uid=templatedocs;Pwd=<templatedocs_password>;
+      - ConnectionStrings__DbType=MySql
+      - Storage__Path=/data/files
+      - GlobalSettings__ProjectName=Template Docs
+      - GlobalSettings__DocsRepoUrl=https://github.com/AiursoftWeb/Template-Docs.git
+      - GlobalSettings__OpenAiInstance=https://ollama.aiursoft.com/v1/chat/completions
+      - GlobalSettings__OpenAiLocalizationModel=aiursoft-localization:latest
+      - GlobalSettings__OpenAiApiToken={{TEMPLATEDOCS_OLLAMA_TOKEN}}
+      - GlobalSettings__EnableEmbeddingBasedSearch=true
+      - GlobalSettings__OpenAiAgentInstance=https://ollama.aiursoft.com/v1/chat/completions
+      - GlobalSettings__OpenAiAgentModel=aiursoft-instruct:latest
+      - GlobalSettings__OpenAiAgentApiToken={{TEMPLATEDOCS_OLLAMA_TOKEN}}
+      - AppSettings__AuthProvider=OIDC
+      - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/template-docs
+      - AppSettings__OIDC__ClientId={{TEMPLATEDOCS_CLIENT_ID}}
+      - AppSettings__OIDC__ClientSecret={{TEMPLATEDOCS_CLIENT_SECRET}}
+      - Logging__Clickhouse__Enabled=true
+      - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
+      - Logging__Clickhouse__TableName=TemplateDocsLogs
+    networks:
+      - proxy_app
+      - internal
+      - clickhouse_net
+    stop_grace_period: 20s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  db:
+    image: pubhub.aiursoft.com/mysql:9.7.0
+    command: --skip-log-bin
+    volumes:
+      - templatedocs-db:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=templatedocs
+      - MYSQL_USER=templatedocs
+      - MYSQL_PASSWORD=<templatedocs_password>
+    networks:
+      - internal
+    stop_grace_period: 60s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+volumes:
+  templatedocs-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/templatedocs-data/aspnet
+  templatedocs-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/templatedocs-data/files
+  templatedocs-db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/templatedocs-data/mysql
+
+networks:
+  proxy_app:
+    external: true
+  clickhouse_net:
+    external: true
+  internal:
+    driver: overlay
