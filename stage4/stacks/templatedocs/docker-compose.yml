@@ -9,20 +9,18 @@ services:
       - templatedocs-aspnet:/data/.aspnet/
       - templatedocs-files:/data/files
     environment:
-      - ConnectionStrings__DefaultConnection=Server=db;Database=templatedocs;Uid=templatedocs;Pwd={{TEMPLATEDOCS_MYSQL_PASSWORD}};
+      - ConnectionStrings__DefaultConnection=Server=db;Database=templatedocs;Uid=templatedocs;Pwd=<templatedocs_password>;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - GlobalSettings__ProjectName=Template Docs
       - GlobalSettings__DocsRepoUrl=https://github.com/AiursoftWeb/Template-Docs.git
       - GlobalSettings__OpenAiInstance=https://ollama.aiursoft.com/v1/chat/completions
       - GlobalSettings__OpenAiLocalizationModel=aiursoft-localization:latest
-      - GlobalSettings__OpenAiApiToken={{TEMPLATEDOCS_LOCALIZATION_API_TOKEN}}
-      - GlobalSettings__EmbeddingOllamaInstance=https://ollama.aiursoft.com
-      - GlobalSettings__EmbeddingApiToken={{TEMPLATEDOCS_EMBEDDING_API_TOKEN}}
+      - GlobalSettings__OpenAiApiToken={{TEMPLATEDOCS_OLLAMA_TOKEN}}
       - GlobalSettings__EnableEmbeddingBasedSearch=true
       - GlobalSettings__OpenAiAgentInstance=https://ollama.aiursoft.com/v1/chat/completions
       - GlobalSettings__OpenAiAgentModel=aiursoft-instruct:latest
-      - GlobalSettings__OpenAiAgentApiToken={{TEMPLATEDOCS_AGENT_API_TOKEN}}
+      - GlobalSettings__OpenAiAgentApiToken={{TEMPLATEDOCS_OLLAMA_TOKEN}}
       - AppSettings__AuthProvider=OIDC
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/template-docs
       - AppSettings__OIDC__ClientId={{TEMPLATEDOCS_CLIENT_ID}}
@@ -55,7 +53,7 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_DATABASE=templatedocs
       - MYSQL_USER=templatedocs
-      - MYSQL_PASSWORD={{TEMPLATEDOCS_MYSQL_PASSWORD}}
+      - MYSQL_PASSWORD=<templatedocs_password>
     networks:
       - internal
     stop_grace_period: 60s
