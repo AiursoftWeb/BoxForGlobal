@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  collector:
+    image: pubhub.aiursoft.com/aiursoft/cloudflare_analytics_collector:latest
+    environment:
+      CLOUDFLARE_API_TOKEN: "{{CLOUDFLARE_ANALYTICS_API_TOKEN}}"
+      CLOUDFLARE_ZONE_ID: "22928e1fb58970c838877709bb363553"
+      CLOUDFLARE_HOSTNAME: "cf.anduinos.com"
+      CLICKHOUSE_URL: "http://clickhouse_clickhouse:8123"
+      CLICKHOUSE_USER: "default"
+      CLICKHOUSE_PASSWORD: "123456"
+      CLICKHOUSE_DATABASE: "cloudflare"
+      SYNC_INTERVAL_SECONDS: "900"
+      BACKFILL_DAYS: "30"
+      RECHECK_HOURS: "48"
+      INGESTION_LAG_HOURS: "1"
+      TZ: "UTC"
+    networks:
+      - clickhouse_net
+    stop_grace_period: 60s
+    deploy:
+      replicas: 1
+      labels:
+        shepherd.autoupdate: "true"
+      restart_policy:
+        condition: any
+        delay: 15s
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+      update_config:
+        order: stop-first
+        delay: 60s
+
+networks:
+  clickhouse_net:
+    external: true
