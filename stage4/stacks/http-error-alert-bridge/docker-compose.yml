@@ -1,0 +1,111 @@
+version: '3.9'
+
+services:
+  app:
+    image: pubhub.aiursoft.com/aiursoft/http_error_alert_center_bridge:latest
+    environment:
+      - SERVER_NAME=global
+      - >-
+        MONITORED_HOSTS=aimer.aiursoft.com,
+        alertcenter.aiursoft.com,
+        anduin.aiursoft.com,
+        anduinos.com,
+        anois.aiursoft.com,
+        aoe.aiursoft.com,
+        aoe.anduinlab.com,
+        apkg-dav.aiursoft.com,
+        apkg.aiursoft.com,
+        auth.aiursoft.com,
+        avigame.aiursoft.com,
+        avigame.anduinlab.com,
+        blog.niyahsoft.com,
+        carson.aiursoft.com,
+        clickhouse.aiursoft.com,
+        cody.aiursoft.com,
+        cody.niyahsoft.com,
+        cook.aiursoft.com,
+        docs.anduinos.com,
+        dvorak.aiursoft.com,
+        edgeneko-comment.aiursoft.com,
+        edgeneko.aiursoft.com,
+        employee.aiursoft.com,
+        events.aiursoft.com,
+        fissssssh.aiursoft.com,
+        gbiner.aiursoft.com,
+        gist.aiursoft.com,
+        grafana.aiursoft.com,
+        gxhao.aiursoft.com,
+        howtocook.aiursoft.com,
+        ip.aiursoft.com,
+        ip.anduinlab.com,
+        jimmoen.aiursoft.com,
+        kanban.aiursoft.com,
+        kitlau.aiursoft.com,
+        lily.aiursoft.com,
+        lyx.aiursoft.com,
+        manhours.aiursoft.com,
+        marktohtml.aiursoft.com,
+        memos.aiursoft.com,
+        mirror-ppa.aiursoft.com,
+        mirror.aiursoft.com,
+        musictools.aiursoft.com,
+        news.aiursoft.com,
+        news.anduinos.com,
+        npm.aiursoft.com,
+        nuget.aiursoft.com,
+        polls.aiursoft.com,
+        pub.aiursoft.com,
+        pubhub.aiursoft.com,
+        rdf.aiursoft.com,
+        rest.aiursoft.com,
+        shubuzuo.aiursoft.com,
+        stathub.aiursoft.com,
+        template-docs.aiursoft.com,
+        template.aiursoft.com,
+        test.anduinos.com,
+        todo.aiursoft.com,
+        tracer.aiursoft.com,
+        translate.aiursoft.com,
+        uptime.aiursoft.com,
+        vault.aiursoft.com,
+        vpn.aiursoft.com,
+        warp.aiursoft.com,
+        www.aiursoft.com,
+        www.anduinos.com,
+        xinboo.aiursoft.com,
+        yuyuyuyublog.aiursoft.com,
+        zoneblog.aiursoft.com
+      - CLICKHOUSE_CONNECTION_STRING=Host=clickhouse_clickhouse;Protocol=http;Port=8123;Database=logs;User=default;Password=123456
+      - ALERTCENTER_URL=https://alertcenter.aiursoft.com
+      - ALERTCENTER_API_KEY={{HTTP_ERROR_ALERTCENTER_API_KEY}}
+    volumes:
+      - data:/data
+    networks:
+      - clickhouse_net
+      - proxy_app
+    stop_grace_period: 60s
+    deploy:
+      replicas: 1
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+      update_config:
+        order: stop-first
+        delay: 60s
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/http-error-alert-bridge/data
+
+networks:
+  clickhouse_net:
+    external: true
+  proxy_app:
+    external: true
