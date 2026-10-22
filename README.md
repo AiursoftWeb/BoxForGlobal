@@ -29,6 +29,18 @@ To serve as the high-bandwidth gateway for the rest of the world and act as the 
     *   `manhours`, `wiki`, `www`: Static or lightweight web apps.
     *   `uptimekuma`: External monitoring of the other two boxes.
 
+## CorpHome contact alerts
+
+The `stage4/stacks/corphome` stack enables AlertCenter integration using `CORPHOME_ALERTCENTER_API_KEY`. Supply a dedicated CorpHome application key with **create incident** permission through the deployment's existing secret substitution mechanism; do not commit the key. Configure the application's sev2 notification route and responder access in AlertCenter.
+
+Deploy the CorpHome version containing contact-alert migrations before applying this stack configuration. New contact submissions are queued durably, including while delivery is disabled; pre-integration contacts are not backfilled. The app sends sev2 incidents asynchronously, retries with stable report IDs, and leaves follow-up/resolution manual. Verify one valid test submission creates one incident and reaches the intended channel. The application defaults to disabled outside this stack; if delivery must be paused here, set `GlobalSettings__AlertCenter_Enabled=false` in the stack because environment values override UI settings.
+
+After supplying the key in the deployment environment file and updating this repository on the Global node, deploy only the CorpHome stack from the repository root:
+
+```bash
+sudo bash deploy.sh --stage 4 --filter corphome
+```
+
 ## 🚀 Deployment
 
 ```bash
