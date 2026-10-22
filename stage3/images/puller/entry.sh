@@ -229,6 +229,7 @@ images=(
     "aiursoft/apkg"
     "aiursoft/howtocookviewer"
     "aiursoft/kanban"
+    "aiursoft/http_error_alert_center_bridge"
     "aiursoft/moongladev2"
     "aiursoft/translate"
     "aiursoft/edgeneko-blog"
