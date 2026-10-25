@@ -22,6 +22,7 @@ services:
       - AppSettings__DefaultRole=Employees
       - AppSettings__AuthProvider=OIDC
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/alertcenter
+      - AppSettings__OIDC__MobileAuthority=https://auth.aiursoft.com/application/o/alertcenter-android
       - AppSettings__OIDC__ClientId={{ALERTCENTER_CLIENT_ID}}
       - AppSettings__OIDC__ClientSecret={{ALERTCENTER_CLIENT_SECRET}}
       - Logging__Clickhouse__Enabled=true
