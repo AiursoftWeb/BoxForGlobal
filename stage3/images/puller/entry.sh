@@ -237,6 +237,7 @@ images=(
     "aiursoft/eventsrecorder"
     "aiursoft/fissssssh-blog"
     "aiursoft/polls"
+    "aiursoft/chessserver"
     "aiursoft/docsviewer"
     "aiursoft/cloudflare_analytics_collector"
     "aiursoft/corphome"

@@ -25,6 +25,7 @@ To serve as the high-bandwidth gateway for the rest of the world and act as the 
     *   `puller`: Automated image syncing service.
     *   `aptmirror` / `ppamirror`: Local repositories for Debian/Ubuntu.
 *   **Stage 4 (Apps):**
+    *   `chessserver`: Signed-in chess games at `chess.aiursoft.com`.
     *   `alertcenter`: Alert management and on-call response at `alertcenter.aiursoft.com`.
     *   `manhours`, `wiki`, `www`: Static or lightweight web apps.
     *   `uptimekuma`: External monitoring of the other two boxes.
