@@ -1,0 +1,88 @@
+version: "3.9"
+
+services:
+  app:
+    depends_on:
+      - db
+    image: pubhub.aiursoft.com/aiursoft/chessserver:latest
+    volumes:
+      - chessserver-aspnet:/data/.aspnet/
+      - chessserver-files:/data/files
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=chessserver;Uid=chessserver;Pwd=<chessserver_password>;
+      - ConnectionStrings__DbType=MySql
+      - Storage__Path=/data/files
+      - AppSettings__AuthProvider=OIDC
+      - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/chessserver
+      - AppSettings__OIDC__ClientId={{CHESSSERVER_CLIENT_ID}}
+      - AppSettings__OIDC__ClientSecret={{CHESSSERVER_CLIENT_SECRET}}
+      - Logging__Clickhouse__Enabled=true
+      - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
+      - Logging__Clickhouse__TableName=ChessServerLogs
+    networks:
+      - proxy_app
+      - internal
+      - clickhouse_net
+    stop_grace_period: 20s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  db:
+    image: pubhub.aiursoft.com/mysql:9.7.0
+    command: --skip-log-bin
+    volumes:
+      - chessserver-db:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=chessserver
+      - MYSQL_USER=chessserver
+      - MYSQL_PASSWORD=<chessserver_password>
+    networks:
+      - internal
+    stop_grace_period: 60s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+volumes:
+  chessserver-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/chessserver-data/files
+  chessserver-aspnet:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/chessserver-data/aspnet
+  chessserver-db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/chessserver-data/mysql
+
+networks:
+  proxy_app:
+    external: true
+  clickhouse_net:
+    external: true
+  internal:
+    driver: overlay
