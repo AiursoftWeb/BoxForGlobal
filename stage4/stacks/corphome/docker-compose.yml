@@ -16,6 +16,14 @@ services:
       - GlobalSettings__AlertCenter_Endpoint=https://alertcenter.aiursoft.com
       - GlobalSettings__AlertCenter_ApiKey={{CORPHOME_ALERTCENTER_API_KEY}}
       - GlobalSettings__AlertCenter_PublicBaseUrl=https://www.aiursoft.com
+      - GlobalSettings__ContactMail_Enabled={{CORPHOME_CONTACT_MAIL_ENABLED}}
+      - GlobalSettings__ContactMail_Host=mail.aiursoft.com
+      - GlobalSettings__ContactMail_Port=993
+      - GlobalSettings__ContactMail_Username={{CORPHOME_CONTACT_MAIL_USERNAME}}
+      - GlobalSettings__ContactMail_Password={{CORPHOME_CONTACT_MAIL_PASSWORD}}
+      - GlobalSettings__ContactMail_Folder=INBOX
+      - GlobalSettings__ContactMail_StaffSenders=@aiursoft.com
+      - GlobalSettings__ContactMail_FollowUpDays=7
       - AppSettings__AuthProvider=OIDC
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/corphome
       - AppSettings__OIDC__ClientId={{CORPHOME_CLIENT_ID}}
