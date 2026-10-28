@@ -1,9 +1,9 @@
 version: '3.9'
 
 services:
-  collector:
+  collector: &collector
     image: pubhub.aiursoft.com/aiursoft/cloudflare_analytics_collector:latest
-    environment:
+    environment: &collector-environment
       CLOUDFLARE_API_TOKEN: "{{CLOUDFLARE_ANALYTICS_API_TOKEN}}"
       CLOUDFLARE_ZONE_ID: "22928e1fb58970c838877709bb363553"
       CLOUDFLARE_HOSTNAME: "cf.anduinos.com"
@@ -33,6 +33,12 @@ services:
       update_config:
         order: stop-first
         delay: 60s
+
+  packages-collector:
+    <<: *collector
+    environment:
+      <<: *collector-environment
+      CLOUDFLARE_HOSTNAME: "packages.anduinos.com"
 
 networks:
   clickhouse_net:
