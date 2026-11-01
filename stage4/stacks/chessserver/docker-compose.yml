@@ -21,6 +21,7 @@ services:
       - Logging__Clickhouse__TableName=ChessServerLogs
       - OpenAI__CompletionApiUrl=https://ollama.aiursoft.com/v1/chat/completions
       - OpenAI__Model=aiursoft-instruct:latest
+      - OpenAI__TimeoutSeconds=480
       - OpenAI__Token={{CHESSSERVER_OLLAMA_TOKEN}}
     networks:
       - proxy_app
