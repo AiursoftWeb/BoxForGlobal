@@ -230,6 +230,7 @@ images=(
     "aiursoft/howtocookviewer"
     "aiursoft/kanban"
     "aiursoft/http_error_alert_center_bridge"
+    "aiursoft/clickhouse_app_log_error_monitor"
     "aiursoft/moongladev2"
     "aiursoft/translate"
     "aiursoft/edgeneko-blog"
