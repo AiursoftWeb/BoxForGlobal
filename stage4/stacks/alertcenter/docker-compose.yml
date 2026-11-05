@@ -25,6 +25,10 @@ services:
       - AppSettings__OIDC__MobileAuthority=https://auth.aiursoft.com/application/o/alertcenter-android
       - AppSettings__OIDC__ClientId={{ALERTCENTER_CLIENT_ID}}
       - AppSettings__OIDC__ClientSecret={{ALERTCENTER_CLIENT_SECRET}}
+      - GlobalSettings__EmbeddingOllamaInstance=https://ollama.aiursoft.com
+      - GlobalSettings__EmbeddingModel=bge-m3:latest
+      - GlobalSettings__EmbeddingApiToken={{ALERTCENTER_OLLAMA_TOKEN}}
+      - GlobalSettings__EnableEmbeddingBasedSearch=true
       - Logging__Clickhouse__Enabled=true
       - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
       - Logging__Clickhouse__TableName=AlertCenterLogs
