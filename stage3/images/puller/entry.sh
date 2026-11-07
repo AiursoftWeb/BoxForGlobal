@@ -250,6 +250,7 @@ images=(
     "aiursoft/marktohtml"
     "aiursoft/moongladepure"
     "aiursoft/musictools"
+    "aiursoft/shepherd-140fixed"
     "aiursoft/stathub"
     "aiursoft/static"
     "aiursoft/template"
