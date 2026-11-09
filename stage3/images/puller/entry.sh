@@ -227,6 +227,7 @@ images=(
     "anduin2019/avigame"
     "aiursoft/alertcenter"
     "aiursoft/apkg"
+    "aiursoft/nupkg"
     "aiursoft/howtocookviewer"
     "aiursoft/kanban"
     "aiursoft/http_error_alert_center_bridge"
