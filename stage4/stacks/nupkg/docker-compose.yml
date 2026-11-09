@@ -1,0 +1,87 @@
+version: "3.9"
+
+services:
+  app:
+    depends_on:
+      - db
+    image: pubhub.aiursoft.com/aiursoft/nupkg:latest
+    volumes:
+      - nupkg-data:/data
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=nupkg;Uid=nupkg;Pwd=<nupkg_password>;
+      - ConnectionStrings__DbType=MySql
+      - Storage__Path=/data/files
+      - EnableLegacyApiKey=false
+      - AllowAnonymousPublishing=false
+      # Download missing packages from NuGet.org and retain them in local storage.
+      - Mirror__Enabled=true
+      - Mirror__Legacy=false
+      - Mirror__PackageSource=https://api.nuget.org/v3/index.json
+      - AppSettings__AuthProvider=OIDC
+      - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/nupkg
+      - AppSettings__OIDC__ClientId={{NUPKG_CLIENT_ID}}
+      - AppSettings__OIDC__ClientSecret={{NUPKG_CLIENT_SECRET}}
+      - Logging__Clickhouse__Enabled=true
+      - Logging__Clickhouse__ConnectionString=Host=clickhouse;User=default;Password=123456;Database=AspNetCoreLogs
+      - Logging__Clickhouse__TableName=NupkgLogs
+    networks:
+      - proxy_app
+      - internal
+      - clickhouse_net
+    stop_grace_period: 20s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+      update_config:
+        order: start-first
+        delay: 5s
+
+  db:
+    image: pubhub.aiursoft.com/mysql:9.7.0
+    command: --skip-log-bin
+    volumes:
+      - nupkg-db:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=nupkg
+      - MYSQL_USER=nupkg
+      - MYSQL_PASSWORD=<nupkg_password>
+    networks:
+      - internal
+    stop_grace_period: 60s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+volumes:
+  nupkg-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/nupkg-data/data
+  nupkg-db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/nupkg-data/mysql
+
+networks:
+  proxy_app:
+    external: true
+  clickhouse_net:
+    external: true
+  internal:
+    driver: overlay
