@@ -7,6 +7,10 @@ services:
     image: pubhub.aiursoft.com/aiursoft/nupkg:latest
     volumes:
       - nupkg-data:/data
+    # Reach the Proart origin verified by S360, rather than Global's separate BaGet.
+    # Preserve the source hostname, HTTPS SNI and certificate verification.
+    extra_hosts:
+      - "nuget.aiursoft.com:124.160.101.12"
     environment:
       - ConnectionStrings__DefaultConnection=Server=db;Database=nupkg;Uid=nupkg;Pwd=<nupkg_password>;
       - ConnectionStrings__DbType=MySql
