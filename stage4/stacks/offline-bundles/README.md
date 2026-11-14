@@ -13,7 +13,7 @@ Prepare these directories under `/swarm-vol/anduinos-offline-bundles`:
 - `signing`: mode 0700, owned by 10001, containing the existing production GnuPG
   private key. Restore it from the controlled MS backup when moving hosts.
 - `inputs`: read-only to the worker, containing the authenticated Ubuntu and
-  AnduinOS public archive keyrings, genuine 2.0.0/2.0.4 baseline metadata, and
+  AnduinOS public archive keyrings, genuine 2.0.0 baseline metadata, and
   `keys/bundle-signing.gpg`.
 
 The public signing key is available at
