@@ -8,7 +8,7 @@ services:
     volumes:
       - dms-data:/data
     environment:
-      - ConnectionStrings__DefaultConnection=Server=db;Database=dms;Uid=dms;Pwd={{DMS_MYSQL_PASSWORD}};
+      - ConnectionStrings__DefaultConnection=Server=db;Database=dms;Uid=dms;Pwd=<dms_password>;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - Dms__StatePath=/data/dms-state
@@ -49,7 +49,7 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_DATABASE=dms
       - MYSQL_USER=dms
-      - MYSQL_PASSWORD={{DMS_MYSQL_PASSWORD}}
+      - MYSQL_PASSWORD=<dms_password>
     networks:
       - internal
     stop_grace_period: 60s
