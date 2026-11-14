@@ -259,6 +259,7 @@ images=(
     "aiursoft/tracer"
     "aiursoft/warp"
     "aiursoft/anduinoshome"
+    "aiursoft/anduinosofflinebundles"
     "artalk/artalk-go"
     "caddy"
     "caddy:builder"
