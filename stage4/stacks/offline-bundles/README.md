@@ -20,15 +20,17 @@ The public signing key is available at
 <https://offline-update-packages.anduinos.com/sign-cert.gpg>. Its SHA-256 is
 `4aee607db52c652290045b0b77c30d62adecff7bf3f6d801a66d38f9db5693df`, and its
 OpenPGP fingerprint is `8F083DFE22EEC13D5FCB525E1EBE8FD7C3DA8DF4`.
-The updater package checks the same SHA-256 when building. The startup command
+The updater package checks the same SHA-256 when building. The worker
 checks the public key and requires the existing private key; it never generates
 or replaces a signing identity. Do not regenerate it on an empty mount.
 
 Set only `OFFLINE_BUNDLES_R2_ACCESS_KEY` and `OFFLINE_BUNDLES_R2_SECRET_KEY` in
 private `.env.prod`. The token is restricted to `anduinos-offline-updates`.
-The endpoint, bucket, schedule and public key identity are reviewed in Compose.
-The JSON environment value is written to a private temporary file solely because
-the CLI accepts a settings-file argument; it contains no credentials.
+The endpoint, bucket, schedule and public key identity are reviewed in
+[automation.json](automation.json), mounted read-only at `/config/automation.json`.
+The image starts its default CLI command directly. It requires OfflineBundles
+10.0.9 or later for startup identity checks; deploy the published application
+before switching from the former shell wrapper. No credentials belong in this file.
 
 Before enabling the stack, use the published image to run `automate --once`
 with the same settings, mounts and resource limits. Verify the uploaded bundle
