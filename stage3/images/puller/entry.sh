@@ -230,6 +230,7 @@ images=(
     "aiursoft/nupkg"
     "aiursoft/howtocookviewer"
     "aiursoft/kanban"
+    "aiursoft/dms"
     "aiursoft/http_error_alert_center_bridge"
     "aiursoft/clickhouse_app_log_error_monitor"
     "aiursoft/moongladev2"

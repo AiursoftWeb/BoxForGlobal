@@ -1,0 +1,87 @@
+version: "3.9"
+
+services:
+  app:
+    depends_on:
+      - db
+    image: pubhub.aiursoft.com/aiursoft/dms:latest
+    volumes:
+      - dms-data:/data
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=dms;Uid=dms;Pwd={{DMS_MYSQL_PASSWORD}};
+      - ConnectionStrings__DbType=MySql
+      - Storage__Path=/data/files
+      - Dms__StatePath=/data/dms-state
+      - AppSettings__AuthProvider=OIDC
+      - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/dms
+      - AppSettings__OIDC__ClientId=dms-controller
+      - AppSettings__OIDC__ClientSecret={{DMS_CLIENT_SECRET}}
+      - Logging__Clickhouse__Enabled=true
+      - Logging__Clickhouse__ConnectionString=Host=clickhouse;Protocol=http;Port=8123;User=default;Password=123456;Database=Dms
+      - Logging__Clickhouse__TableName=DmsAppLogs
+      - Dms__Clickhouse__Enabled=true
+      - Dms__Clickhouse__ConnectionString=Host=clickhouse;Protocol=http;Port=8123;User=default;Password=123456;Database=Dms
+    networks:
+      - proxy_app
+      - internal
+      - clickhouse_net
+    stop_grace_period: 60s
+    deploy:
+      replicas: 1
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+      update_config:
+        order: stop-first
+        delay: 60s
+      rollback_config:
+        order: stop-first
+
+  db:
+    image: pubhub.aiursoft.com/mysql:9.7.0
+    command: --skip-log-bin
+    volumes:
+      - dms-db:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=dms
+      - MYSQL_USER=dms
+      - MYSQL_PASSWORD={{DMS_MYSQL_PASSWORD}}
+    networks:
+      - internal
+    stop_grace_period: 60s
+    deploy:
+      labels:
+        shepherd.autoupdate: "true"
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+      update_config:
+        order: stop-first
+        delay: 60s
+
+volumes:
+  dms-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/dms-data/app
+  dms-db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/dms-data/mysql
+
+networks:
+  proxy_app:
+    external: true
+  clickhouse_net:
+    external: true
+  internal:
+    driver: overlay
