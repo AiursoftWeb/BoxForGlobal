@@ -30,8 +30,9 @@ The endpoint, bucket, schedule and public key identity are reviewed in
 [automation.json](automation.json). When this stack is selected, `deploy.sh`
 copies it to `/swarm-vol/anduinos-offline-bundles/config/automation.json` before
 deploying. Only that runtime directory is mounted read-only at `/config`;
-the container never mounts the Box checkout. Editing the checked-in file takes
-effect on the next normal deployment, without a manual copy step.
+the container never mounts the Box checkout. Normal deployment refreshes this
+runtime copy without a manual copy step. The worker reads settings at startup;
+restart it after deploying settings changes if the service definition is unchanged.
 The image starts its default CLI command directly. It requires OfflineBundles
 10.0.9 or later for startup identity checks; deploy the published application
 before switching from the former shell wrapper. No credentials belong in this file.
