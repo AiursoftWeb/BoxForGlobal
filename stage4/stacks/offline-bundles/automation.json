@@ -15,6 +15,12 @@
       "profile": "/app/profiles/resolute-amd64.json",
       "inputs": "/inputs",
       "summary": "Cumulative AnduinOS system and security updates."
+    },
+    {
+      "id": "resolute-2-0-arm64",
+      "profile": "/app/profiles/resolute-arm64.json",
+      "inputs": "/inputs",
+      "summary": "Cumulative AnduinOS system and security updates."
     }
   ],
   "trusted_keyring_sha256": "4aee607db52c652290045b0b77c30d62adecff7bf3f6d801a66d38f9db5693df"
