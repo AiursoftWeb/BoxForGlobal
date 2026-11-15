@@ -1,6 +1,6 @@
 # AnduinOS offline update publisher
 
-One worker builds cumulative Resolute/amd64 bundles every 48 hours and publishes
+One worker builds cumulative Resolute AMD64 and ARM64 bundles every 48 hours and publishes
 them to the dedicated R2 bucket. It has no HTTP endpoint or website dependency.
 Each release group keeps three published batches; retired objects have a 24-hour
 deletion grace. See the [publisher documentation](https://github.com/AiursoftWeb/anduinosofflinebundles/blob/master/docs/automation.md).
@@ -13,8 +13,22 @@ Prepare these directories under `/swarm-vol/anduinos-offline-bundles`:
 - `signing`: mode 0700, owned by 10001, containing the existing production GnuPG
   private key. Restore it from the controlled MS backup when moving hosts.
 - `inputs`: read-only to the worker, containing the authenticated Ubuntu and
-  AnduinOS public archive keyrings, genuine 2.0.0 baseline metadata, and
+  AnduinOS public archive keyrings, genuine AMD64 2.0.0 and ARM64 2.0.1 baseline metadata, and
   `keys/bundle-signing.gpg`.
+
+The baseline paths relative to `inputs` are `baselines/2.0.0.status` and
+`baselines/2.0.0.os-release` for AMD64, and
+`baselines/resolute-arm64/2.0.1.status` and
+`baselines/resolute-arm64/2.0.1.os-release` for ARM64. ARM64 first shipped in
+2.0.1; do not substitute AMD64 metadata or a newer installation.
+
+These two enabled groups retain up to six visible archives. The intended four
+groups retain up to twelve once Stonking AMD64 and ARM64 are also qualified.
+Stonking profiles are included in the application image, but remain disabled
+until the official 2.1 release sources, original baselines and installation
+acceptance are available. Do not replace production sources with development
+repositories to fill a missing group. Adding a job makes its first run due
+immediately without resetting another group's persisted schedule.
 
 The public signing key is available at
 <https://offline-update-packages.anduinos.com/sign-cert.gpg>. Its SHA-256 is
@@ -40,8 +54,8 @@ never mounts the Box checkout. `deploy.sh` does not copy or manage this file.
 When changing the configuration, repeat the copy and restart the worker to load it.
 
 The image starts its default CLI command directly. It requires OfflineBundles
-10.0.9 or later for startup identity checks; deploy the published application
-before switching from the former shell wrapper. No credentials belong in this file.
+10.0.10 or later for the ARM64 profile; deploy the published application
+and prepare its baseline inputs before enabling the ARM64 job. No credentials belong in this file.
 
 Before enabling the stack, use the published image to run `automate --once`
 with the same settings, mounts and resource limits. Verify the uploaded bundle
