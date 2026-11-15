@@ -730,6 +730,12 @@ find ./stage4 -name 'docker-compose.yml' -print0 | while IFS= read -r -d '' file
 
     # Check if a filter is active, and if the stack name matches the filter
     if [ -z "$STACK_FILTER" ] || [[ "$stack_name" == *"$STACK_FILTER"* ]]; then
+        if [ "$stack_name" = "offline-bundles" ]; then
+            print_ok "Copying offline publisher configuration..."
+            sudo install -d -m 0755 /swarm-vol/anduinos-offline-bundles/config
+            sudo install -m 0644 "$(dirname "$file")/automation.json" /swarm-vol/anduinos-offline-bundles/config/automation.json.tmp
+            sudo mv /swarm-vol/anduinos-offline-bundles/config/automation.json.tmp /swarm-vol/anduinos-offline-bundles/config/automation.json
+        fi
         print_ok "Deploying stack: $stack_name"
         deploy "$file" "$stack_name"
 
