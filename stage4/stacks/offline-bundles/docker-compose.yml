@@ -9,7 +9,7 @@ services:
       ANDUINOS_R2_SECRET_KEY: "{{OFFLINE_BUNDLES_R2_SECRET_KEY}}"
       TZ: UTC
     volumes:
-      - offline-config:/config:ro
+      - offline-runtime-config:/config:ro
       - offline-data:/data
       - offline-signing:/signing
       - offline-inputs:/inputs:ro
@@ -50,9 +50,9 @@ volumes:
       type: none
       o: bind
       device: /swarm-vol/anduinos-offline-bundles/inputs
-  offline-config:
+  offline-runtime-config:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /swarm-vol/boxforglobal/stage4/stacks/offline-bundles
+      device: /swarm-vol/anduinos-offline-bundles/config
