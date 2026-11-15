@@ -27,12 +27,18 @@ or replaces a signing identity. Do not regenerate it on an empty mount.
 Set only `OFFLINE_BUNDLES_R2_ACCESS_KEY` and `OFFLINE_BUNDLES_R2_SECRET_KEY` in
 private `.env.prod`. The token is restricted to `anduinos-offline-updates`.
 The endpoint, bucket, schedule and public key identity are reviewed in
-[automation.json](automation.json). When this stack is selected, `deploy.sh`
-copies it to `/swarm-vol/anduinos-offline-bundles/config/automation.json` before
-deploying. Only that runtime directory is mounted read-only at `/config`;
-the container never mounts the Box checkout. Normal deployment refreshes this
-runtime copy without a manual copy step. The worker reads settings at startup;
-restart it after deploying settings changes if the service definition is unchanged.
+[automation.json](automation.json). From the Box checkout, create the runtime
+directory and copy the configuration before the first deployment:
+
+```bash
+sudo mkdir -p /swarm-vol/anduinos-offline-bundles/config
+sudo cp stage4/stacks/offline-bundles/automation.json /swarm-vol/anduinos-offline-bundles/config/automation.json
+```
+
+Only this runtime directory is mounted read-only at `/config`; the container
+never mounts the Box checkout. `deploy.sh` does not copy or manage this file.
+When changing the configuration, repeat the copy and restart the worker to load it.
+
 The image starts its default CLI command directly. It requires OfflineBundles
 10.0.9 or later for startup identity checks; deploy the published application
 before switching from the former shell wrapper. No credentials belong in this file.
