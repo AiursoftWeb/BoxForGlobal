@@ -4,39 +4,12 @@ services:
   publisher:
     image: pubhub.aiursoft.com/aiursoft/anduinosofflinebundles:latest
     user: "10001:10001"
-    entrypoint: ["/bin/sh", "-ec"]
-    command:
-      - |
-        umask 077
-        printf '%s  %s\n' '4aee607db52c652290045b0b77c30d62adecff7bf3f6d801a66d38f9db5693df' /inputs/keys/bundle-signing.gpg | sha256sum --check --status
-        test -d /signing/private-keys-v1.d
-        gpg --homedir /signing --batch --list-secret-keys 8F083DFE22EEC13D5FCB525E1EBE8FD7C3DA8DF4 >/dev/null
-        printf '%s\n' "$$OFFLINE_SETTINGS_JSON" > /tmp/automation.json
-        exec dotnet /app/anduinos-offline-bundles.dll automate --settings /tmp/automation.json
     environment:
       ANDUINOS_R2_ACCESS_KEY: "{{OFFLINE_BUNDLES_R2_ACCESS_KEY}}"
       ANDUINOS_R2_SECRET_KEY: "{{OFFLINE_BUNDLES_R2_SECRET_KEY}}"
       TZ: UTC
-      OFFLINE_SETTINGS_JSON: |
-        {
-          "service_url": "https://3ba1f9e23b1db2d0b52f64b307bc75d1.r2.cloudflarestorage.com",
-          "bucket": "anduinos-offline-updates",
-          "state_directory": "/data",
-          "signing": {
-            "home": "/signing",
-            "key": "8F083DFE22EEC13D5FCB525E1EBE8FD7C3DA8DF4",
-            "trusted_keyring": "/inputs/keys/bundle-signing.gpg"
-          },
-          "interval_hours": 48,
-          "retry_minutes": 60,
-          "jobs": [{
-            "id": "resolute-2-0-amd64",
-            "profile": "/app/profiles/resolute-amd64.json",
-            "inputs": "/inputs",
-            "summary": "Cumulative AnduinOS system and security updates."
-          }]
-        }
     volumes:
+      - offline-config:/config:ro
       - offline-data:/data
       - offline-signing:/signing
       - offline-inputs:/inputs:ro
@@ -77,3 +50,9 @@ volumes:
       type: none
       o: bind
       device: /swarm-vol/anduinos-offline-bundles/inputs
+  offline-config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /swarm-vol/boxforglobal/stage4/stacks/offline-bundles
