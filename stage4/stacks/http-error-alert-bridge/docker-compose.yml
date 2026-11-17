@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   app:
-    image: pubhub.aiursoft.com/aiursoft/http_error_alert_center_bridge:latest
+    image: pubhub.aiursoft.com/aiursoft/logwatchdog:latest
     environment:
       - SERVER_NAME=global
       - MONITORED_HOSTS=*
