@@ -231,7 +231,7 @@ images=(
     "aiursoft/howtocookviewer"
     "aiursoft/kanban"
     "aiursoft/dms"
-    "aiursoft/http_error_alert_center_bridge"
+    "aiursoft/logwatchdog"
     "aiursoft/clickhouse_app_log_error_monitor"
     "aiursoft/moongladev2"
     "aiursoft/translate"
