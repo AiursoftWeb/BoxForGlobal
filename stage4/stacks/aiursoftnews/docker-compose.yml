@@ -12,6 +12,7 @@ services:
       - ConnectionStrings__DefaultConnection=Server=db;Database=moongladev2;Uid=moongladev2;Pwd=<moongladev2_password>;
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
+      - GlobalSettings__TranslateDrafts=true
       - AppSettings__AuthProvider=OIDC
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/news-center/
       - AppSettings__OIDC__ClientId={{NEWS_CENTER_CLIENT_ID}}
