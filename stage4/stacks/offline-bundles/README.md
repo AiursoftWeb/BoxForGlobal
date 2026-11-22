@@ -52,9 +52,10 @@ Only this runtime directory is mounted read-only at `/config`; the container
 never mounts the Box checkout. `deploy.sh` does not copy or manage this file.
 When changing the configuration, repeat the copy and restart the worker to load it.
 
-The image starts its default CLI command directly. It requires OfflineBundles
-10.0.10 or later for the ARM64 profile; deploy the published application
-and prepare its baseline inputs before enabling the ARM64 job. No credentials belong in this file.
+The image starts its default CLI command directly. The Stonking jobs require
+OfflineBundles 10.0.16 or later to verify the SHA-512 package hashes in the
+signed Ubuntu indexes. Synchronize the published image and prepare the baseline
+inputs before enabling the jobs. Keep credentials out of this file.
 
 Before enabling the stack, use the published image to run `automate --once`
 with the same settings, mounts and resource limits. Verify the uploaded bundle
