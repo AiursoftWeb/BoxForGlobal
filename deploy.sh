@@ -667,8 +667,6 @@ print_warn "====================================================================
 sleep 3
 
 deploy stage3/stacks/authentik/docker-compose.yml authentik
-deploy stage3/stacks/nuget/docker-compose.yml nuget
-deploy stage3/stacks/npm/docker-compose.yml npm
 
 print_ok "Building local zot..."
 sudo docker build ./stage3/images/zot -t localhost:8080/box_starting/local_zot:latest
