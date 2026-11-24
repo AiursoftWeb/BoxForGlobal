@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   app:
-    image: pubhub.aiursoft.com/aiursoft/clickhouse_app_log_error_monitor:latest
+    image: pubhub.aiursoft.com/aiursoft/dotnetwatchdog:latest
     environment:
       - NODE_NAME=global
       - CLICKHOUSE_PUBLIC_URL=https://clickhouse.aiursoft.com

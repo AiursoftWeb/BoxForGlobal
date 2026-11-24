@@ -232,7 +232,7 @@ images=(
     "aiursoft/kanban"
     "aiursoft/dms"
     "aiursoft/logwatchdog"
-    "aiursoft/clickhouse_app_log_error_monitor"
+    "aiursoft/dotnetwatchdog"
     "aiursoft/moongladev2"
     "aiursoft/translate"
     "aiursoft/edgeneko-blog"
