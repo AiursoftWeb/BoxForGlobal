@@ -55,7 +55,6 @@ Configure the private environment described in Configuration before deployment. 
     *   `puller`: Automated image syncing service.
     *   `aptmirror` / `ppamirror`: Local repositories for Debian/Ubuntu.
 *   **Stage 4 (Apps):**
-    *   `offline-bundles`: Scheduled AnduinOS update packaging and R2 publication; [setup](stage4/stacks/offline-bundles/README.md).
     *   `chessserver`: Signed-in chess games at `chess.aiursoft.com`.
     *   `dms`: Single-instance operations Controller with OIDC at `dms.aiursoft.com`; persistent workflow state and isolated MySQL/ClickHouse data.
     *   `alertcenter`: Alert management and on-call response at `alertcenter.aiursoft.com`.
