@@ -12,6 +12,13 @@ services:
       - ConnectionStrings__DbType=MySql
       - Storage__Path=/data/files
       - Dms__StatePath=/data/dms-state
+      - Dms__LockboxEmail__Enabled=true
+      - Dms__LockboxEmail__SmtpHost=mail.aiursoft.com
+      - Dms__LockboxEmail__SmtpPort=587
+      - Dms__LockboxEmail__SmtpUsername={{DMS_LOCKBOX_SMTP_USERNAME}}
+      - Dms__LockboxEmail__SmtpPassword={{DMS_LOCKBOX_SMTP_PASSWORD}}
+      - Dms__LockboxEmail__From={{DMS_LOCKBOX_SMTP_FROM}}
+      - Dms__LockboxEmail__ControllerOrigin=https://dms.aiursoft.com
       - AppSettings__AuthProvider=OIDC
       - AppSettings__OIDC__Authority=https://auth.aiursoft.com/application/o/dms
       - AppSettings__OIDC__ClientId=dms-controller
